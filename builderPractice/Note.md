@@ -1,0 +1,7 @@
+- Modbus là một giao thức truyền thông công nghiệp
+- Trong Modbus có 4 datatype: coil, input, input register, holding register
+- Mỗi datatype có một vùng nhớ riêng biệt được đánh địa chỉ
+- Ta có thể read/write vào các địa chỉ chứa dữ liệu
+- Trong bài này sẽ xử lí việc read trong hai function 01 và 02 tương ứng với hai kiểu dữ liệu là coil và input
+- Ở đây sẽ chỉ xử lí request frame với cấu trúc gồm Slave address, function code, start address, number bits cần đọc.
+- Sử dụng builder pattern để quản lý quá trình khởi tạo
