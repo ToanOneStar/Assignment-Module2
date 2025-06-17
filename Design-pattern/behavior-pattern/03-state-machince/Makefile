@@ -12,6 +12,8 @@ SRCS = $(SRC_DIR)/musicPlayer.c \
        $(SRC_DIR)/stoppedState.c \
        $(SRC_DIR)/playingState.c \
        $(SRC_DIR)/pausedState.c \
+	   $(SRC_DIR)/bufferingState.c \
+	   $(SRC_DIR)/errorState.c \
        main.c
 
 # Object files
