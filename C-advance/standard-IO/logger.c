@@ -28,9 +28,9 @@ static const char* getFileName(const char* filepath) {
 // create timestamp
 static void getTimestamp(char* buffer, size_t buffersize) {
     time_t now = time(NULL);
-    struct tm* tmInfo = localtime(&now);
+    struct tm* timeInfo = localtime(&now);
 
-    strftime(buffer, buffersize, "%Y-%m-%d %H:%M:%S", tmInfo);
+    strftime(buffer, buffersize, "%Y-%m-%d %H:%M:%S", timeInfo);
 }
 
 static const char* convertStringLevel(LogLevel level) {
@@ -41,7 +41,7 @@ static const char* convertStringLevel(LogLevel level) {
     return "INVALID";
 }
 
-logMessage(LogLevel level, const char* file, int line, const char* format, ...) {
+void logMessage(LogLevel level, const char* file, int line, const char* format, ...) {
     char timestamp[SIZE_OF_TIMESTAMP];
     getTimestamp(timestamp, sizeof(timestamp));
 
