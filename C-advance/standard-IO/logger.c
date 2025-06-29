@@ -5,6 +5,7 @@
 #define SIZE_OF_USER_MESSAGE 1024
 #define SIZE_OF_LOG_BUFFER   1536
 #define SIZE_OF_TIMESTAMP    32
+
 const char* logLevelNames[] = {
     "EMERGENCY",
     "ALERT",
@@ -64,10 +65,8 @@ void logMessage(LogLevel level, const char* file, int line, const char* format, 
              line,
              user_message);
 
-    // print to console
     printf("%s", logLine);
 
-    // write to log.txt
     FILE* logFile = fopen("log.txt", "a");
     if (logFile != NULL) {
         fprintf(logFile, "%s", logLine);
