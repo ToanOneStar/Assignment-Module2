@@ -6,3 +6,5 @@
 - Behavior
 ## C-advance
 - Varriables
+- Standard IO
+- Operator and control structure
