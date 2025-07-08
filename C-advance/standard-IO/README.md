@@ -6,10 +6,10 @@ Xây dựng module logger chuyên nghiệp cho C, hỗ trợ ghi log ra nhiều 
 ## 2. Cấu trúc source code
 ```
 standard-IO/
-├── logger.h         # Định nghĩa API logger, enum log level, macro tiện lợi
-├── logger.c         # Triển khai logic logger
-├── main.c           # Chương trình kiểm thử logger
-├── Makefile         # Script build project
+├── logger.h        
+├── logger.c         
+├── main.c          
+├── Makefile        
 ```
 
 ## 3. Các API, struct, element chính
