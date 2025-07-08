@@ -4,24 +4,20 @@
 
 #define SIZE_OF_NAME_SENSOR_MANAGER 20
 
-/*status connect with database*/
 #define DISCONNECTED_DATABASE       0
 #define CONNECTED_DATABASE          1
 
-/*define enum for modes of sensor manager*/
 typedef enum {
     NODE_TEMP,
     NODE_HUMID,
     NODE_LIGHT,
 } NodeManager;
 
-/*define enum for methods collect data*/
 typedef enum {
     REAL_TIME,
     PREODIC,
 } DataCollectionMethod;
 
-/*Define SensorManager structure*/
 typedef struct {
     NodeManager currentNode;
     DataCollectionMethod dataCollectionMethod;
@@ -29,10 +25,8 @@ typedef struct {
     int statusConnectDatabase;
 } SensorManager;
 
-/*static variable to store the unique instance of SensorManager*/
 static SensorManager* sensorManager = NULL;
 
-/*function to create SensorManager instance*/
 SensorManager* createSensorManager(const char* nameSensorManager, NodeManager currentNode,
                                    DataCollectionMethod dataCollectionMethod, int statusConnectionDatabase) {
     if (sensorManager != NULL) {
@@ -40,7 +34,6 @@ SensorManager* createSensorManager(const char* nameSensorManager, NodeManager cu
         return NULL;
     }
 
-    /*create sensor manager if it does not already exist*/
     sensorManager = (SensorManager*)malloc(sizeof(SensorManager));
     if (sensorManager != NULL) {
         snprintf(sensorManager->nameSensorManager, sizeof(sensorManager->nameSensorManager), "%s", nameSensorManager);
@@ -48,10 +41,10 @@ SensorManager* createSensorManager(const char* nameSensorManager, NodeManager cu
         sensorManager->dataCollectionMethod = dataCollectionMethod;
         sensorManager->statusConnectDatabase = statusConnectionDatabase;
     }
+
     return sensorManager;
 }
 
-/*function to delete the sensormanager instance*/
 void deleteSensorManager() {
     if (sensorManager != NULL) {
         free(sensorManager);
@@ -59,7 +52,6 @@ void deleteSensorManager() {
     }
 }
 
-/*function to get the string representation of NodeManager*/
 const char* getNodeManagerString(NodeManager node) {
     switch (node) {
         case NODE_TEMP: return "Temperature Node";
@@ -69,7 +61,6 @@ const char* getNodeManagerString(NodeManager node) {
     }
 }
 
-/*function to get the string representation of DataCollectionMethod*/
 const char* getDataCollectionMethodString(DataCollectionMethod method) {
     switch (method) {
         case REAL_TIME: return "Real-time";
@@ -79,7 +70,6 @@ const char* getDataCollectionMethodString(DataCollectionMethod method) {
 }
 
 int main() {
-    /*create sensor manager*/
     SensorManager* manager1 = createSensorManager("manager1", NODE_TEMP, REAL_TIME, CONNECTED_DATABASE);
     if (manager1 != NULL) {
         printf("Sensor manager created\n");
@@ -90,7 +80,6 @@ int main() {
                manager1->statusConnectDatabase == CONNECTED_DATABASE ? "Connected" : "Disconnected");
     }
 
-    /*try to create a second sensor manager*/
     SensorManager* manager2 = createSensorManager("manager2", NODE_HUMID, PREODIC, DISCONNECTED_DATABASE);
     if (manager2 == NULL) {
         printf("failed to create manager 2\n");

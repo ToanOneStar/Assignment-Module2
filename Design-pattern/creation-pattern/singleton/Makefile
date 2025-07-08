@@ -1,2 +1,2 @@
 all: 
-	gcc main.c -o exam
+	gcc main.c -o main
