@@ -10,5 +10,6 @@ extern sensor_data_t g_sensor_data;
 void system_init(void);
 void process_buttons(void);
 void send_status_report(void);
+void simulate_system(void);
 
 #endif // APP_H
