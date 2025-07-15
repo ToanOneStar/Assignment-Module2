@@ -9,6 +9,7 @@ SRCS = $(SRC_DIR)/actuators.c \
        $(SRC_DIR)/buttons.c \
        $(SRC_DIR)/sensors.c \
        $(SRC_DIR)/watering_logic.c \
+	   $(SRC_DIR)/app.c \
        main.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

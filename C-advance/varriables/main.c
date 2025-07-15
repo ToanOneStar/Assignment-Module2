@@ -1,15 +1,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "inc/app.h"
+#include "inc/buttons.h"
+#include "inc/actuators.h"
+#include "inc/sensors.h"
+#include "inc/watering_logic.h"
 
 system_config_t g_config;
 system_state_t g_state;
 sensor_data_t g_sensor_data;
-
-void system_init(void);
-void process_buttons(void);
-void send_status_report(void);
-void simulate_user_input(void);
 
 int main(void) {
     printf("=== Smart Plant Watering System (SPWS) ===\n");
