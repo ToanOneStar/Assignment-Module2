@@ -12,8 +12,6 @@
 #define DEFAULT_SENSOR_CHECK_INTERVAL     300  // 5 minutes
 #define DEFAULT_MIN_WAIT_BETWEEN_WATERING 1800 // 30 minutes
 #define MANUAL_WATERING_TIME              10   // 10 seconds for manual watering
-
-// Button debounce time
 #define BUTTON_DEBOUNCE_MS                50
 
 typedef enum {
