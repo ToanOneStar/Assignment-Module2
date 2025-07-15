@@ -23,24 +23,7 @@ int main(void) {
 
     int loop_count = 0;
     while (1) {
-        if (!sensors_read_data(&g_sensor_data)) {
-            printf("[ERROR] Failed to read sensor data\n");
-            g_state.system_error = true;
-        } else {
-            g_state.system_error = false;
-        }
-
-        process_buttons();
-        watering_logic_process(&g_config, &g_state, &g_sensor_data);
-
-        if (g_config.current_mode == MODE_MANUAL && g_state.pump_state == PUMP_ON) {
-            time_t current_time = time(NULL);
-            if (current_time - g_state.watering_start_time >= MANUAL_WATERING_TIME) {
-                pump_turn_off();
-                g_state.pump_state = PUMP_OFF;
-                printf("[LOGIC] Manual watering timeout - stopped\n");
-            }
-        }
+        simulate_system();
 
         if (loop_count % 10 == 0) {
             send_status_report();
@@ -73,6 +56,5 @@ int main(void) {
     }
 
     printf("\nSystem shutdown complete.\n");
-
     return 0;
 }

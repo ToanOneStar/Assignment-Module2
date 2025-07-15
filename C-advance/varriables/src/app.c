@@ -61,3 +61,24 @@ void send_status_report(void) {
     }
     printf("--------------------\n\n");
 }
+
+void simulate_system(void) {
+    if (!sensors_read_data(&g_sensor_data)) {
+            printf("[ERROR] Failed to read sensor data\n");
+            g_state.system_error = true;
+    } else {
+        g_state.system_error = false;
+    }
+
+    process_buttons();
+    watering_logic_process(&g_config, &g_state, &g_sensor_data);
+
+    if (g_config.current_mode == MODE_MANUAL && g_state.pump_state == PUMP_ON) {
+        time_t current_time = time(NULL);
+        if (current_time - g_state.watering_start_time >= MANUAL_WATERING_TIME) {
+            pump_turn_off();
+            g_state.pump_state = PUMP_OFF;
+            printf("[LOGIC] Manual watering timeout - stopped\n");
+        }
+    }
+}
