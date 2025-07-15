@@ -4,7 +4,6 @@
 void watering_logic_init(system_config_t* config, system_state_t* state) {
     printf("[LOGIC] Initializing watering logic...\n");
 
-    // Initialize default configuration
     config->min_moisture_threshold = DEFAULT_MIN_MOISTURE;
     config->max_moisture_threshold = DEFAULT_MAX_MOISTURE;
     config->max_watering_time_sec = DEFAULT_MAX_WATERING_TIME;
@@ -12,7 +11,6 @@ void watering_logic_init(system_config_t* config, system_state_t* state) {
     config->min_wait_between_watering_sec = DEFAULT_MIN_WAIT_BETWEEN_WATERING;
     config->current_mode = MODE_AUTO;
 
-    // Initialize system state
     state->pump_state = PUMP_OFF;
     state->led_state = LED_NORMAL;
     state->watering_start_time = 0;
@@ -26,12 +24,10 @@ void watering_logic_init(system_config_t* config, system_state_t* state) {
 void watering_logic_process(system_config_t* config, system_state_t* state, sensor_data_t* sensor_data) {
     time_t current_time = time(NULL);
 
-    // Only process automatic watering in AUTO mode
     if (config->current_mode != MODE_AUTO) {
         return;
     }
 
-    // Check if it's time to read sensors
     if (current_time - state->last_sensor_check >= config->sensor_check_interval_sec) {
         state->last_sensor_check = current_time;
         if (state->pump_state == PUMP_OFF) {
@@ -58,17 +54,14 @@ bool should_start_watering(const system_config_t* config, const system_state_t* 
                            const sensor_data_t* sensor_data) {
     time_t current_time = time(NULL);
 
-    // Check if moisture is below threshold
     if (sensor_data->soil_moisture_percent >= config->min_moisture_threshold) {
         return false;
     }
 
-    // Check if enough time has passed since last watering
     if (current_time - state->last_watering_time < config->min_wait_between_watering_sec) {
         return false;
     }
 
-    // Check for system error
     if (state->system_error) {
         return false;
     }
@@ -80,17 +73,14 @@ bool should_stop_watering(const system_config_t* config, const system_state_t* s
                           const sensor_data_t* sensor_data) {
     time_t current_time = time(NULL);
 
-    // Stop if moisture threshold is reached
     if (sensor_data->soil_moisture_percent >= config->max_moisture_threshold) {
         return true;
     }
 
-    // Stop if maximum watering time is reached
     if (current_time - state->watering_start_time >= config->max_watering_time_sec) {
         return true;
     }
 
-    // Stop if system error occurs
     if (state->system_error) {
         return true;
     }

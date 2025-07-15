@@ -3,7 +3,6 @@
 
 #include "../factory/sensor.h"
 
-// Function prototypes for the light sensor
 void lightSensorInit();
 float lightSensorReadData();
 Sensor createLightSensor();

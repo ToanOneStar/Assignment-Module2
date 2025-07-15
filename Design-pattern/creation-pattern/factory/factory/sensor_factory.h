@@ -7,7 +7,7 @@ typedef enum {
     SENSOR_TEMPERATURE,
     SENSOR_HUMIDITY,
     SENSOR_LIGHT,
-    SENSOR_PRESSURE,
+    SENSOR_PRESSURE
 } SensorType;
 
 Sensor* createSensor(SensorType type);

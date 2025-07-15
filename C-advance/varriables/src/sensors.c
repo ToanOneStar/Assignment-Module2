@@ -6,7 +6,6 @@ static bool sensor_initialized = false;
 void sensors_init(void) {
     printf("[SENSORS] Initializing sensors...\n");
 
-    // Simulate GPIO and ADC initialization
     sensor_initialized = true;
     printf("[SENSORS] Sensors initialized successfully\n");
 }

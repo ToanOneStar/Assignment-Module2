@@ -3,7 +3,6 @@
 
 #include "../factory/sensor.h"
 
-// Function prototypes for the humidity sensor
 void humiditySensorInit();
 float humiditySensorReadData();
 Sensor createHumiditySensor();

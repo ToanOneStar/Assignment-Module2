@@ -15,6 +15,7 @@ int main() {
     setMovieNightScene(smartHome);
 
     printf("\nFreeing allocated memory...\n");
+    
     free(smartHome->lightSystem);
     free(smartHome->sercuritySystem);
     free(smartHome->hvacSystem);

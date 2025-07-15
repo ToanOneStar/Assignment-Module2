@@ -3,7 +3,6 @@
 
 #include "../publisher.h"
 
-// Door sensor struct
 typedef struct
 {
     Publisher base;

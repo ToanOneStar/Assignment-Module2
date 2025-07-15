@@ -16,9 +16,10 @@ static void monitorSensor(void) {
 
 SercuritySystem* createSercuritySystem(void) {
     SercuritySystem* system = (SercuritySystem*)malloc(sizeof(SercuritySystem));
-    /*assign funtions of sercurity system*/
+ 
     system->activeAlarm = activeAlarm;
     system->deactiveAlarm = deactiveAlarm;
     system->monitorSensor = monitorSensor;
+    
     return system;
 }

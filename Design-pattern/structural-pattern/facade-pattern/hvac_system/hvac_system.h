@@ -6,7 +6,6 @@ typedef struct {
     void (*setMode)(const char* mode); 
 } HvacSystem;
 
-/*function to create a new hvac system*/
 HvacSystem* createHvacSystem(void);
 
 #endif

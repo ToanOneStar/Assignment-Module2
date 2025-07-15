@@ -6,10 +6,9 @@ void lightSensorInit() {
 }
 
 float lightSensorReadData() {
-    return 300.0; // Simulated value
+    return 300.0; 
 }
 
-// Create a light sensor object
 Sensor createLightSensor() {
     Sensor lightSensor;
     lightSensor.init = lightSensorInit;

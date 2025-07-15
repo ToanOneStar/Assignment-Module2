@@ -11,11 +11,10 @@ typedef struct SmartHomeFacade {
     SercuritySystem* sercuritySystem;
 } SmartHomeFacade;
 
-/*function to create a new smart home facade*/
 SmartHomeFacade* createSmartHomeFacade(void);
 
-/*user scenarios*/
 void activateMorningRoutine(SmartHomeFacade* facade);
 void activateAwayMode(SmartHomeFacade* facade);
 void setMovieNightScene(SmartHomeFacade* facade);
+
 #endif

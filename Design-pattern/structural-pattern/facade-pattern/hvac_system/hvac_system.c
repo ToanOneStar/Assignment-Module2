@@ -12,8 +12,8 @@ static void setMode(const char* mode) {
 
 HvacSystem* createHvacSystem(void) {
     HvacSystem* system = (HvacSystem*)malloc(sizeof(HvacSystem));
-    /*assign funtions of hvac system*/
     system->setTemperature = setTemperature;
     system->setMode = setMode;
+
     return system;
 }

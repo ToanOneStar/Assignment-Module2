@@ -3,7 +3,6 @@
 
 #include "../publisher.h"
 
-// Motion sensor struct
 typedef struct
 {
     Publisher base;

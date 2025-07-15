@@ -46,7 +46,6 @@ int crc_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* re
             return COMM_SUCCESS;
         }
 
-        // Extract CRC and data
         size_t dataLength = tempReceived - 1;
         uint8_t receivedCrc = tempBuffer[dataLength];
         uint8_t calculatedCrc = calculate_crc8(tempBuffer, dataLength);
@@ -74,7 +73,6 @@ int crc_send(void* instance, const uint8_t* data, size_t length) {
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    // Create packet with CRC
     uint8_t* packet = malloc(length + 1);
     memcpy(packet, data, length);
     packet[length] = calculate_crc8(data, length);
@@ -84,5 +82,5 @@ int crc_send(void* instance, const uint8_t* data, size_t length) {
     int result = decorator->baseChannel->send(decorator->baseChannel->instance, packet, length + 1);
     free(packet);
 
-    return (result > 0) ? result - 1 : result; // Return original data length
+    return (result > 0) ? result - 1 : result; 
 }

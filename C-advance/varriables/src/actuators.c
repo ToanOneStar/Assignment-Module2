@@ -7,7 +7,6 @@ static bool actuators_initialized = false;
 void actuators_init(void) {
     printf("[ACTUATORS] Initializing actuators...\n");
     
-    // Simulate GPIO initialization for pump and LED
     current_pump_state = PUMP_OFF;
     current_led_state = LED_NORMAL;
     actuators_initialized = true;

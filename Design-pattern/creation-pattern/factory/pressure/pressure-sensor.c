@@ -1,15 +1,14 @@
 #include <stdio.h>
-#include "pressure_sensor.h"
+#include "pressure-sensor.h"
 
 void pressureSensorInit() {
     printf("Pressure sensor initialized.\n");
 }
 
 float pressureSensorReadData() {
-    return 20.0; // Simulated value
+    return 20.0; 
 }
 
-/*Create a pressure sensor object*/
 Sensor createPressureSensor() {
     Sensor pressureSensor;
     pressureSensor.init = pressureSensorInit;

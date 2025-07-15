@@ -30,9 +30,6 @@ varriables/
   - Lưu giá trị độ ẩm đất, nhiệt độ môi trường
 - **struct SystemConfig:**
   - Ngưỡng độ ẩm, thời gian tưới tối đa, chu kỳ kiểm tra, chế độ hiện tại
-- **API chính:**
-  - sensors_read(), actuators_turn_pump_on/off(), actuators_set_led_state(), buttons_read(), watering_logic_update(), watering_logic_manual_watering(), watering_logic_switch_mode(), ...
-
 ## 4. How to build & run
 ```bash
 # Build project

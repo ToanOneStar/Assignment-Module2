@@ -19,7 +19,6 @@ int encryption_send(void* instance, const uint8_t* data, size_t length) {
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    // Simple XOR encryption
     uint8_t* encrypted = malloc(length);
     for (size_t i = 0; i < length; i++) {
         encrypted[i] = data[i] ^ decorator->key;
@@ -43,7 +42,6 @@ int encryption_receive(void* instance, uint8_t* buffer, size_t bufferLength, siz
         decorator->baseChannel->receive(decorator->baseChannel->instance, buffer, bufferLength, receivedLength);
 
     if (result == COMM_SUCCESS && *receivedLength > 0) {
-        // Simple XOR decryption (same as encryption for XOR)
         for (size_t i = 0; i < *receivedLength; i++) {
             buffer[i] = buffer[i] ^ decorator->key;
         }

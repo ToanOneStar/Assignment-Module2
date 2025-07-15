@@ -7,7 +7,6 @@ typedef struct {
     void (*setBrightness)(int value);
 } LightSystem;
 
-/*function to create a new light system*/
 LightSystem* createLightSystem(void);
 
 #endif
