@@ -3,7 +3,6 @@
 
 #include "../publisher.h"
 
-// Smoke sensor struct
 typedef struct {
     Publisher base;
     int smokeDetected;

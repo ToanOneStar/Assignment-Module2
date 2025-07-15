@@ -26,7 +26,6 @@ static const char* getFileName(const char* filepath) {
     return (fileName != NULL) ? fileName + 1 : filepath;
 }
 
-// create timestamp
 static void getTimestamp(char* buffer, size_t buffersize) {
     time_t now = time(NULL);
     struct tm* timeInfo = localtime(&now);

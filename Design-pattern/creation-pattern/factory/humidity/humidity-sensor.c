@@ -6,10 +6,9 @@ void humiditySensorInit() {
 }
 
 float humiditySensorReadData() {
-    return 60.0; // Simulated value
+    return 60.0; 
 }
 
-// Create a humidity sensor object
 Sensor createHumiditySensor() {
     Sensor humiditySensor;
     humiditySensor.init = humiditySensorInit;

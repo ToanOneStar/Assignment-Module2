@@ -6,7 +6,6 @@
 #include "inc/sensors.h"
 #include "inc/watering_logic.h"
 
-// Global system variables
 static system_config_t g_config;
 static system_state_t g_state;
 static sensor_data_t g_sensor_data;
@@ -20,10 +19,8 @@ int main(void) {
     printf("=== Smart Plant Watering System (SPWS) ===\n");
     printf("Initializing system...\n\n");
 
-    // Initialize random seed for sensor simulation
     srand(time(NULL));
 
-    // Initialize all system components
     system_init();
 
     printf("\nSystem ready! Starting main loop...\n");
@@ -41,7 +38,6 @@ int main(void) {
         process_buttons();
         watering_logic_process(&g_config, &g_state, &g_sensor_data);
 
-        // Handle manual watering timeout
         if (g_config.current_mode == MODE_MANUAL && g_state.pump_state == PUMP_ON) {
             time_t current_time = time(NULL);
             if (current_time - g_state.watering_start_time >= MANUAL_WATERING_TIME) {
@@ -55,7 +51,6 @@ int main(void) {
             send_status_report();
         }
 
-        // Simulate some user button presses for demonstration
         switch (loop_count) {
             case 5:
                 printf("\n[DEMO] Simulating mode toggle button press...\n");
@@ -75,10 +70,8 @@ int main(void) {
         buttons_update();
         loop_count++;
 
-        // Delay to simulate real-time operation (1 second intervals)
         sleep(1);
 
-        // Exit after demonstration
         if (loop_count > 30) {
             break;
         }
@@ -90,13 +83,11 @@ int main(void) {
 }
 
 void system_init(void) {
-    // Initialize all system modules
     sensors_init();
     actuators_init();
     buttons_init();
     watering_logic_init(&g_config, &g_state);
 
-    // Initial sensor reading
     if (!sensors_read_data(&g_sensor_data)) {
         printf("[ERROR] Initial sensor reading failed\n");
         g_state.system_error = true;
@@ -106,7 +97,6 @@ void system_init(void) {
 }
 
 void process_buttons(void) {
-    // Check mode toggle button
     if (button_was_pressed(BUTTON_MODE_TOGGLE)) {
         if (g_config.current_mode == MODE_AUTO) {
             g_config.current_mode = MODE_MANUAL;
@@ -121,7 +111,6 @@ void process_buttons(void) {
         }
     }
 
-    // Check manual watering button (only works in manual mode)
     if (button_was_pressed(BUTTON_MANUAL_WATER)) {
         if (g_config.current_mode == MODE_MANUAL && g_state.pump_state == PUMP_OFF) {
             start_manual_watering(&g_state);

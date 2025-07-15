@@ -25,8 +25,8 @@ factory/
 │   ├── humidity-sensor.c       
 │   └── humidity-sensor.h
 ├── pressure/
-│   ├── pressure_sensor.c        
-│   └── pressure_sensor.h
+│   ├── pressure-sensor.c        
+│   └── pressure-sensor.h
 ├── light/
 │   ├── light-sensor.c           
 │   └── light-sensor.h

@@ -16,14 +16,12 @@ typedef enum {
     COMM_ERROR_COMPRESSION_FAIL,
 } ErrorCode;
 
-/*Base Communication Channel Interface*/
 typedef struct CommunicationChannel {
     int (*send)(void* instance, const uint8_t* data, size_t length);
     int (*receive)(void* instance, uint8_t* buffer, size_t bufferLength, size_t* receivedLength);
     void* instance;
 } CommunicationChannel;
 
-/*Base uart channel implementation*/
 typedef struct {
     uint8_t sendBuffer[1024];
     size_t sendBufferSize;

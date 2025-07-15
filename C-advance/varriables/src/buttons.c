@@ -8,7 +8,6 @@ static bool buttons_initialized = false;
 void buttons_init(void) {
     printf("[BUTTONS] Initializing buttons...\n");
     
-    // Simulate GPIO initialization for buttons
     for (int i = 0; i < 2; i++) {
         button_states[i] = BUTTON_RELEASED;
         prev_button_states[i] = BUTTON_RELEASED;

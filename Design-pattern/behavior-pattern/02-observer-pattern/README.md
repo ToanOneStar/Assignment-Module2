@@ -20,29 +20,28 @@ Dự án này triển khai một hệ thống quản lý nhà thông minh sử d
 
 ```
 02-observer-pattern/
-├── inc/                           # Header files
-│   ├── sensors/                   # Sensor headers (Publishers)
+├── inc/                         
+│   ├── sensors/                
 │   │   ├── door_sensor.h         
 │   │   ├── motion_sensor.h       
 │   │   ├── smoke_sensor.h        
 │   │   └── temperature_sensor.h  
-│   ├── subscribers/              # Subscriber headers
+│   ├── subscribers/              
 │   │   ├── publisher.h           
 │   │   └── subscriber.h          
-├── src/                          # Source files
+├── src/                          
 │   ├── sensors/                  
 │   │   ├── door_sensor.c
 │   │   ├── motion_sensor.c
 │   │   ├── smoke_sensor.c
 │   │   └── temperature_sensor.c
-│   ├── subscribers/              # Subscriber
+│   ├── subscribers/             
 │   │   ├── alarm_system_controller.c    
 │   │   ├── hvac_system_controller.c     
 │   │   ├── light_system_controller.c    
 │   │   └── mobile_app_notifier.c       
 │   ├── publisher.c               
 │   └── main.c                   
-├── obj/                          # Object files 
 └── Makefile                      
 ```
 

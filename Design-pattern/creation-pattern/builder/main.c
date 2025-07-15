@@ -3,7 +3,6 @@
 
 #include "modbus/modbus_builder.c"
 
-/* Define structure of a Modbus RTU frame */
 #define NUMBER_BYTES_SLAVE_ADDRESS   1
 #define NUMBER_BYTES_FUNCTION_CODE   1
 #define NUMBER_BYTES_START_ADDRESS   2
@@ -13,7 +12,6 @@
 
 char frameData[SUM_BYTES_USED] = "";
 
-/*function convert int number to hexa string*/
 void intToHex(int value, char* hexString, int numberChar) {
     if (numberChar * 2 == 2) {
         sprintf(hexString, "%02X", value);
@@ -49,24 +47,20 @@ void createFrameData(char* framedata, int slaveAddress, int functionCode, int st
 }
 
 int main() {
-    // Initialize the Builder
     MODBUS_Builder builder = MODBUS_Builder_Init();
 
-    // Configure Modbus read request function using the Builder
     MODBUS_ReadRequestFunction_Config_t modbusConfig = builder.setSlaveAddress(&builder, 2)
                                                            ->setFunctionCode(&builder, FUNC_READ_COIL)
                                                            ->setStartAddress(&builder, FUNC_READ_COIL, 40)
                                                            ->setNumberBitsRead(&builder, 10)
                                                            ->build(&builder);
 
-    // Create the frame data
     createFrameData(frameData,
                     modbusConfig.slaveAddress,
                     modbusConfig.functionCode,
                     modbusConfig.startAddress,
                     modbusConfig.numberBitsRead);
 
-    // Print the result
     printf("Request: %s\n", frameData);
 
     return 0;

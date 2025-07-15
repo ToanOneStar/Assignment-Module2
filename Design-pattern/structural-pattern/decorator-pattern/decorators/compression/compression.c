@@ -12,7 +12,6 @@ size_t rle_compress(const uint8_t* input, size_t inputLength, uint8_t* output, s
         uint8_t currentByte = input[i];
         uint8_t count = 1;
 
-        // Count consecutive identical bytes (max 255)
         while (i + count < inputLength && input[i + count] == currentByte && count < 255) {
             count++;
         }
@@ -52,7 +51,7 @@ int compression_send(void* instance, const uint8_t* data, size_t length) {
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    uint8_t* compressed = malloc(length * 2); // Worst case: every byte different
+    uint8_t* compressed = malloc(length * 2); 
     size_t compressedLength = rle_compress(data, length, compressed, length * 2);
 
     printf("[COMPRESSION] Original: %zu bytes, Compressed: %zu bytes\n", length, compressedLength);
@@ -60,7 +59,7 @@ int compression_send(void* instance, const uint8_t* data, size_t length) {
     int result = decorator->baseChannel->send(decorator->baseChannel->instance, compressed, compressedLength);
     free(compressed);
 
-    return (result > 0) ? (int)length : result; // Return original length if successful
+    return (result > 0) ? (int)length : result; 
 }
 
 int compression_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* receivedLength) {

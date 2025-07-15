@@ -15,12 +15,12 @@ standard-IO/
 ## 3. Các API, struct, element chính
 - **enum LogLevel:**
   - LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFO, LOG_DEBUG
-- **int logger_init(const char* filename, LogLevel min_level);**
-  - Khởi tạo logger, cấu hình file log (có thể NULL), mức lọc log tối thiểu.
-- **void logger_set_level(LogLevel min_level);**
-  - Thay đổi mức lọc log tại runtime.
-- **void logger_close();**
-  - Đóng logger, giải phóng tài nguyên.
+- **static const char* getFileName(const char* filepath)**
+  - Lấy file name
+- **static void getTimestamp(char* buffer, size_t buffersize)**
+  - Định thời gian
+- **static const char* convertStringLevel(LogLevel level)**
+  - Chuyển string -> log level
 - **void logger_log(LogLevel level, const char* file, int line, const char* fmt, ...);**
   - Ghi log với metadata (timestamp, file, line), định dạng message như printf.
 - **Macro log_message(level, ...):**

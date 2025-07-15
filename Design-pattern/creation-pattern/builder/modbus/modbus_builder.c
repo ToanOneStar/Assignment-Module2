@@ -42,14 +42,13 @@ static MODBUS_Builder* setNumberBitsRead(MODBUS_Builder* builder, int numberBits
     return builder;
 }
 
-/*Function to build and return the MODBUS configuration*/
 static MODBUS_ReadRequestFunction_Config_t build(MODBUS_Builder* builder) {
     return builder->config;
 }
 
 MODBUS_Builder MODBUS_Builder_Init() {
     MODBUS_Builder builder;
-    /*default value*/
+    
     builder.config.slaveAddress = 0;
     builder.config.functionCode = FUNC_READ_COIL;
     builder.config.startAddress = 0x00;

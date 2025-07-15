@@ -3,7 +3,6 @@
 
 typedef struct Publisher Publisher;
 
-// Subscriber interface
 typedef struct Subscriber {
     void (*update)(struct Subscriber* self, Publisher* context, const char* eventInfo);
     void* data;

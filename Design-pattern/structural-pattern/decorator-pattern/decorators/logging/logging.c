@@ -7,13 +7,12 @@ int logging_send(void* instance, const uint8_t* data, size_t length) {
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    // Log transaction
     time_t now = time(NULL);
     char* timeStr = ctime(&now);
-    timeStr[strlen(timeStr) - 1] = '\0'; // Remove newline
+    timeStr[strlen(timeStr) - 1] = '\0'; 
 
     printf("[LOG] %s - SEND: %zu bytes - Data: ", timeStr, length);
-    for (size_t i = 0; i < (length < 8 ? length : 8); i++) { // Log first 8 bytes
+    for (size_t i = 0; i < (length < 8 ? length : 8); i++) { 
         printf("%02X ", data[i]);
     }
     if (length > 8) {
@@ -36,7 +35,7 @@ int logging_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t
     if (result == COMM_SUCCESS && *receivedLength > 0) {
         time_t now = time(NULL);
         char* timeStr = ctime(&now);
-        timeStr[strlen(timeStr) - 1] = '\0'; // Remove newline
+        timeStr[strlen(timeStr) - 1] = '\0'; 
 
         printf("[LOG] %s - RECEIVE: %zu bytes - Data: ", timeStr, *receivedLength);
         for (size_t i = 0; i < (*receivedLength < 8 ? *receivedLength : 8); i++) {
@@ -54,7 +53,7 @@ int logging_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t
 CommunicationChannel* create_logging_decorator(CommunicationChannel* baseChannel) {
     LoggingDecorator* decorator = malloc(sizeof(LoggingDecorator));
     decorator->baseChannel = baseChannel;
-    decorator->logFile = NULL; // Could be opened to a file if needed
+    decorator->logFile = NULL; 
 
     CommunicationChannel* channel = malloc(sizeof(CommunicationChannel));
     channel->send = logging_send;

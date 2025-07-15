@@ -16,7 +16,7 @@ static void setBrightness(int value) {
 
 LightSystem* createLightSystem() {
     LightSystem* system = (LightSystem*)malloc(sizeof(LightSystem));
-    /*assign funtions of light system*/
+
     system->turnOn = turnOn;
     system->turnOff = turnOff;
     system->setBrightness = setBrightness;

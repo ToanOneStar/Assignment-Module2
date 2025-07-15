@@ -3,7 +3,6 @@
 
 #include "../publisher.h"
 
-// Temperature sensor struct
 typedef struct {
     Publisher base;
     int overTemperature;

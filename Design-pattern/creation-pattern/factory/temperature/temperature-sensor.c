@@ -6,10 +6,9 @@ void temperatureSensorInit() {
 }
 
 float temperatureSensorReadData() {
-    return 25.5; // Simulated value
+    return 25.5; 
 }
 
-// Create a temperature sensor object
 Sensor createTemperatureSensor() {
     Sensor tempSensor;
     tempSensor.init = temperatureSensorInit;

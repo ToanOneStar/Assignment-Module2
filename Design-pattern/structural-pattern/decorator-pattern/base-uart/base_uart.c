@@ -26,7 +26,6 @@ int uart_send(void* instance, const uint8_t* data, size_t length) {
         return COMM_ERROR_BUFFER_FULL;
     }
 
-    // Simulate UART transmission
     memcpy(uart->sendBuffer + uart->sendBufferSize, data, length);
     uart->sendBufferSize += length;
 
@@ -45,13 +44,12 @@ int uart_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* r
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    // Simulate receiving data (copy from send buffer for demo)
     size_t available = uart->sendBufferSize;
     size_t toReceive = (available < bufferLength) ? available : bufferLength;
 
     if (toReceive > 0) {
         memcpy(buffer, uart->sendBuffer, toReceive);
-        // Shift remaining data
+
         memmove(uart->sendBuffer, uart->sendBuffer + toReceive, uart->sendBufferSize - toReceive);
         uart->sendBufferSize -= toReceive;
     }
@@ -60,9 +58,11 @@ int uart_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* r
 
     if (toReceive > 0) {
         printf("[UART] Received %zu bytes: ", toReceive);
+
         for (size_t i = 0; i < toReceive; i++) {
             printf("%02X ", buffer[i]);
         }
+        
         printf("\n");
     }
 
