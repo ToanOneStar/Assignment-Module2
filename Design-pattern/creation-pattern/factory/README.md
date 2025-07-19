@@ -49,7 +49,7 @@ factory/
 make
 
 # Chạy chương trình
-./exam
+./factory_demo
 ```
 
 ## 5. Kết quả mẫu
