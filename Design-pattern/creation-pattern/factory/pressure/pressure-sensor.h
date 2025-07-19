@@ -1,10 +1,10 @@
 #ifndef PRESSURE_SENSOR_H
 #define PRESSURE_SENSOR_H
 
-#include "../factory/sensor.h"
+#include "sensor.h"
 
 void pressureSensorInit();
 float pressureSensorReadData();
 Sensor createPressureSensor();
 
-#endif
+#endif // PRESSURE_SENSOR_H

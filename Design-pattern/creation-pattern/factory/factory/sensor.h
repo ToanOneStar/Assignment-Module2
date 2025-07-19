@@ -2,8 +2,8 @@
 #define SENSOR_H
 
 typedef struct {
-    void (*init)(void);     
-    float (*readData)(void); 
+    void (*init)(void);
+    float (*readData)(void);
 } Sensor;
 
-#endif
+#endif // SENSOR_H

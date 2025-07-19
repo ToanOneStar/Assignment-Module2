@@ -2,11 +2,11 @@
 #include "pressure-sensor.h"
 
 void pressureSensorInit() {
-    printf("Pressure sensor initialized.\n");
+    printf("Pressure sensor initialized\n");
 }
 
 float pressureSensorReadData() {
-    return 20.0; 
+    return 20.0;
 }
 
 Sensor createPressureSensor() {

@@ -1,10 +1,10 @@
 #ifndef HUMIDITY_SENSOR_H
 #define HUMIDITY_SENSOR_H
 
-#include "../factory/sensor.h"
+#include "sensor.h"
 
 void humiditySensorInit();
 float humiditySensorReadData();
 Sensor createHumiditySensor();
 
-#endif
+#endif // HUMIDITY_SENSOR_H
