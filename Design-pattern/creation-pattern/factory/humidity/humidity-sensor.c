@@ -2,11 +2,11 @@
 #include "humidity-sensor.h"
 
 void humiditySensorInit() {
-    printf("Humidity sensor initialized.\n");
+    printf("Humidity sensor initialized\n");
 }
 
 float humiditySensorReadData() {
-    return 60.0; 
+    return 60.0;
 }
 
 Sensor createHumiditySensor() {

@@ -2,11 +2,11 @@
 #include "light-sensor.h"
 
 void lightSensorInit() {
-    printf("Light sensor initialized.\n");
+    printf("Light sensor initialized\n");
 }
 
 float lightSensorReadData() {
-    return 300.0; 
+    return 300.0;
 }
 
 Sensor createLightSensor() {

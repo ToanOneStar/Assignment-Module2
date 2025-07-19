@@ -6,7 +6,7 @@ void temperatureSensorInit() {
 }
 
 float temperatureSensorReadData() {
-    return 25.5; 
+    return 25.5;
 }
 
 Sensor createTemperatureSensor() {
