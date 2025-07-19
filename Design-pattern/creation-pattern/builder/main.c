@@ -1,67 +1,20 @@
 #include <stdio.h>
-#include <string.h>
-
-#include "modbus/modbus_builder.c"
-
-#define NUMBER_BYTES_SLAVE_ADDRESS   1
-#define NUMBER_BYTES_FUNCTION_CODE   1
-#define NUMBER_BYTES_START_ADDRESS   2
-#define NUMBER_BYTES_NUMBER_BIT_READ 2
-
-#define SUM_BYTES_USED               15
-
-char frameData[SUM_BYTES_USED] = "";
-
-void intToHex(int value, char* hexString, int numberChar) {
-    if (numberChar * 2 == 2) {
-        sprintf(hexString, "%02X", value);
-    } else if (numberChar * 2 == 4) {
-        sprintf(hexString, "%04X", value);
-    }
-}
-
-void createFrameData(char* framedata, int slaveAddress, int functionCode, int startAddress, int numberBitsRead) {
-    char hexString[5];
-    for (int i = 1; i <= 4; ++i) {
-        switch (i) {
-            case 1:
-                intToHex(slaveAddress, hexString, NUMBER_BYTES_SLAVE_ADDRESS);
-                strcat(framedata, hexString);
-                break;
-            case 2:
-                intToHex(functionCode, hexString, NUMBER_BYTES_FUNCTION_CODE);
-                strcat(framedata, hexString);
-                break;
-            case 3:
-                intToHex(startAddress, hexString, NUMBER_BYTES_START_ADDRESS);
-                strcat(framedata, hexString);
-                break;
-            case 4:
-                intToHex(numberBitsRead, hexString, NUMBER_BYTES_NUMBER_BIT_READ);
-                strcat(framedata, hexString);
-                break;
-            default: break;
-        }
-        printf("Hex String for case %d: %s\n", i, hexString);
-    }
-}
+#include "uart-builder.h"
 
 int main() {
-    MODBUS_Builder builder = MODBUS_Builder_Init();
+    UART_Builder builder = UART_Builder_Init();
 
-    MODBUS_ReadRequestFunction_Config_t modbusConfig = builder.setSlaveAddress(&builder, 2)
-                                                           ->setFunctionCode(&builder, FUNC_READ_COIL)
-                                                           ->setStartAddress(&builder, FUNC_READ_COIL, 40)
-                                                           ->setNumberBitsRead(&builder, 10)
-                                                           ->build(&builder);
+    UART_Config_t uartConfig = builder.setBaudRate(&builder, BAUDRATE_115200)
+                                   ->setParity(&builder, ODD)
+                                   ->setStopBits(&builder, 2)
+                                   ->setDataBits(&builder, 9)
+                                   ->build(&builder);
 
-    createFrameData(frameData,
-                    modbusConfig.slaveAddress,
-                    modbusConfig.functionCode,
-                    modbusConfig.startAddress,
-                    modbusConfig.numberBitsRead);
-
-    printf("Request: %s\n", frameData);
+    printf("UART Configuration:\n");
+    printf("Baud Rate: %d\n", uartConfig.baudRate);
+    printf("Parity: %d\n", uartConfig.parity);
+    printf("Stop Bits: %d\n", uartConfig.stopBits);
+    printf("Data Bits: %d\n", uartConfig.dataBits);
 
     return 0;
 }

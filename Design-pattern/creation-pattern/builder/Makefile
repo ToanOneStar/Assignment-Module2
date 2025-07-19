@@ -1,18 +1,14 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -I./modbus
+CC = gcc 
+CFLAGS = -Wall -Wextra -I./uart
 
-SRC = main.c modbus/modbus_builder.c
-OBJ = $(SRC:.c=.o)
+SRC = main.c \
+	uart/uart-builder.c 
 
-TARGET = builder_demo
+TARGET = uart_demo
 
 all: $(TARGET)
-
-$(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(TARGET) *.o
