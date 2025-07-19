@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "smarthomeFacade/smarthomeFacade.h"
+#include "smart-home.h"
 
 int main() {
     SmartHomeFacade* smartHome = createSmartHomeFacade();
@@ -15,9 +15,11 @@ int main() {
     setMovieNightScene(smartHome);
 
     printf("\nFreeing allocated memory...\n");
-    
+
     free(smartHome->lightSystem);
     free(smartHome->sercuritySystem);
     free(smartHome->hvacSystem);
     free(smartHome);
+
+    return 0;
 }
