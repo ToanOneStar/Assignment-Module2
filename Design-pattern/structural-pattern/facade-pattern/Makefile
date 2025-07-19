@@ -1,34 +1,19 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinc -g
+CFLAGS = -Wall -Wextra -I./hvac-system -I./light-system -I./sercurity-system -I./smart-home-facade 
 
-SRC_DIR = src
-OBJ_DIR = obj
-STATE_DIR = $(OBJ_DIR)/states
+SRC = main.c \
+	   hvac-system/hvac-system.c \
+	   light-system/light-system.c \
+	   sercurity-system/sercurity-system.c \
+	   smart-home-facade/smart-home.c
 
-SRCS = $(SRC_DIR)/musicPlayer.c \
-       $(SRC_DIR)/stoppedState.c \
-       $(SRC_DIR)/playingState.c \
-       $(SRC_DIR)/pausedState.c \
-       main.c
+TARGET = smart-home-demo
 
-OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-
-TARGET = musicPlayer
-
-all: $(OBJ_DIR) $(STATE_DIR) $(TARGET)
-
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(STATE_DIR):
-	mkdir -p $(STATE_DIR)
-
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+all: $(TARGET)
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
 
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+	rm -f $(TARGET)
+
+.PHONY: all clean
