@@ -1,11 +1,11 @@
 #include "encryption.h"
 
 CommunicationChannel* create_encryption_decorator(CommunicationChannel* baseChannel, uint8_t key) {
-    EncryptionDecorator* decorator = malloc(sizeof(EncryptionDecorator));
+    EncryptionDecorator* decorator = (EncryptionDecorator*)malloc(sizeof(EncryptionDecorator));
     decorator->baseChannel = baseChannel;
     decorator->key = key;
 
-    CommunicationChannel* channel = malloc(sizeof(CommunicationChannel));
+    CommunicationChannel* channel = (CommunicationChannel*)malloc(sizeof(CommunicationChannel));
     channel->send = encryption_send;
     channel->receive = encryption_receive;
     channel->instance = decorator;

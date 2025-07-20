@@ -9,12 +9,14 @@ int logging_send(void* instance, const uint8_t* data, size_t length) {
 
     time_t now = time(NULL);
     char* timeStr = ctime(&now);
-    timeStr[strlen(timeStr) - 1] = '\0'; 
+    timeStr[strlen(timeStr) - 1] = '\0';
 
     printf("[LOG] %s - SEND: %zu bytes - Data: ", timeStr, length);
-    for (size_t i = 0; i < (length < 8 ? length : 8); i++) { 
+
+    for (size_t i = 0; i < (length < 8 ? length : 8); i++) {
         printf("%02X ", data[i]);
     }
+
     if (length > 8) {
         printf("...");
     }
@@ -35,12 +37,14 @@ int logging_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t
     if (result == COMM_SUCCESS && *receivedLength > 0) {
         time_t now = time(NULL);
         char* timeStr = ctime(&now);
-        timeStr[strlen(timeStr) - 1] = '\0'; 
+        timeStr[strlen(timeStr) - 1] = '\0';
 
         printf("[LOG] %s - RECEIVE: %zu bytes - Data: ", timeStr, *receivedLength);
+
         for (size_t i = 0; i < (*receivedLength < 8 ? *receivedLength : 8); i++) {
             printf("%02X ", buffer[i]);
         }
+
         if (*receivedLength > 8) {
             printf("...");
         }
@@ -51,11 +55,11 @@ int logging_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t
 }
 
 CommunicationChannel* create_logging_decorator(CommunicationChannel* baseChannel) {
-    LoggingDecorator* decorator = malloc(sizeof(LoggingDecorator));
+    LoggingDecorator* decorator = (LoggingDecorator*)malloc(sizeof(LoggingDecorator));
     decorator->baseChannel = baseChannel;
-    decorator->logFile = NULL; 
+    decorator->logFile = NULL;
 
-    CommunicationChannel* channel = malloc(sizeof(CommunicationChannel));
+    CommunicationChannel* channel = (CommunicationChannel*)malloc(sizeof(CommunicationChannel));
     channel->send = logging_send;
     channel->receive = logging_receive;
     channel->instance = decorator;

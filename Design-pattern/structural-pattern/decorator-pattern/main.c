@@ -1,8 +1,8 @@
-#include "base-uart/base_uart.h"
-#include "decorators/compression/compression.h"
-#include "decorators/crc/crc.h"
-#include "decorators/encryption/encryption.h"
-#include "decorators/logging/logging.h"
+#include "base-uart.h"
+#include "compression.h"
+#include "crc.h"
+#include "encryption.h"
+#include "logging.h"
 
 int main() {
     printf("=== Embedded Communication Channel Decorator Pattern Demo ===\n\n");
@@ -17,16 +17,19 @@ int main() {
     size_t testDataLength = sizeof(testData);
 
     printf("Original test data (%zu bytes): ", testDataLength);
+
     for (size_t i = 0; i < testDataLength; i++) {
         printf("%02X ", testData[i]);
     }
+
     printf("\n\n");
-
     printf("=== SENDING DATA ===\n");
-    int sendResult = withCrc->send(withCrc->instance, testData, testDataLength);
-    printf("Send result: %d\n\n", sendResult);
 
+    int sendResult = withCrc->send(withCrc->instance, testData, testDataLength);
+
+    printf("Send result: %d\n\n", sendResult);
     printf("=== RECEIVING DATA ===\n");
+
     uint8_t receiveBuffer[256];
     size_t receivedLength;
     int receiveResult = withCrc->receive(withCrc->instance, receiveBuffer, sizeof(receiveBuffer), &receivedLength);
