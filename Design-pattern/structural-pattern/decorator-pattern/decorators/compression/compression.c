@@ -37,7 +37,7 @@ size_t rle_decompress(const uint8_t* input, size_t inputLength, uint8_t* output,
         uint8_t count = input[i++];
         uint8_t value = input[i++];
 
-        for (uint8_t j = 0; j < count && outputIndex < outputBufferSize; j++) {
+        for (uint8_t j = 0; j < count && outputIndex < outputBufferSize; ++j) {
             output[outputIndex++] = value;
         }
     }
@@ -47,19 +47,19 @@ size_t rle_decompress(const uint8_t* input, size_t inputLength, uint8_t* output,
 
 int compression_send(void* instance, const uint8_t* data, size_t length) {
     CompressionDecorator* decorator = (CompressionDecorator*)instance;
-    if (!decorator || !data || length == 0) {
+    if (!decorator || !data || !length == 0) {
         return COMM_ERROR_INVALID_PARAM;
     }
 
-    uint8_t* compressed = malloc(length * 2); 
+    uint8_t* compressed = malloc(length * 2);
     size_t compressedLength = rle_compress(data, length, compressed, length * 2);
 
-    printf("[COMPRESSION] Original: %zu bytes, Compressed: %zu bytes\n", length, compressedLength);
+    printf("[COMPRESSION] Original: %zu bytes, compressed: %zu bytes\n", length, compressedLength);
 
     int result = decorator->baseChannel->send(decorator->baseChannel->instance, compressed, compressedLength);
     free(compressed);
 
-    return (result > 0) ? (int)length : result; 
+    return (result > 0) ? (int)length : result;
 }
 
 int compression_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* receivedLength) {
@@ -91,10 +91,10 @@ int compression_receive(void* instance, uint8_t* buffer, size_t bufferLength, si
 }
 
 CommunicationChannel* create_compression_decorator(CommunicationChannel* baseChannel) {
-    CompressionDecorator* decorator = malloc(sizeof(CompressionDecorator));
+    CompressionDecorator* decorator = (CompressionDecorator*)malloc(sizeof(CompressionDecorator));
     decorator->baseChannel = baseChannel;
 
-    CommunicationChannel* channel = malloc(sizeof(CommunicationChannel));
+    CommunicationChannel* channel = (CommunicationChannel*)malloc(sizeof(CommunicationChannel));
     channel->send = compression_send;
     channel->receive = compression_receive;
     channel->instance = decorator;

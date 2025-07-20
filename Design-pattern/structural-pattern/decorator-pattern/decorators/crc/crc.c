@@ -1,10 +1,10 @@
 #include "crc.h"
 
 CommunicationChannel* create_crc_decorator(CommunicationChannel* baseChannel) {
-    CrcDecorator* decorator = malloc(sizeof(CrcDecorator));
+    CrcDecorator* decorator = (CrcDecorator*)malloc(sizeof(CrcDecorator));
     decorator->baseChannel = baseChannel;
 
-    CommunicationChannel* channel = malloc(sizeof(CommunicationChannel));
+    CommunicationChannel* channel = (CrcDecorator*)malloc(sizeof(CommunicationChannel));
     channel->send = crc_send;
     channel->receive = crc_receive;
     channel->instance = decorator;
@@ -14,8 +14,10 @@ CommunicationChannel* create_crc_decorator(CommunicationChannel* baseChannel) {
 
 uint8_t calculate_crc8(const uint8_t* data, size_t length) {
     uint8_t crc = 0xFF;
+
     for (size_t i = 0; i < length; i++) {
         crc ^= data[i];
+
         for (int j = 0; j < 8; j++) {
             if (crc & 0x80) {
                 crc = (crc << 1) ^ 0x07;
@@ -24,6 +26,7 @@ uint8_t calculate_crc8(const uint8_t* data, size_t length) {
             }
         }
     }
+
     return crc;
 }
 
@@ -82,5 +85,5 @@ int crc_send(void* instance, const uint8_t* data, size_t length) {
     int result = decorator->baseChannel->send(decorator->baseChannel->instance, packet, length + 1);
     free(packet);
 
-    return (result > 0) ? result - 1 : result; 
+    return (result > 0) ? result - 1 : result;
 }

@@ -1,7 +1,7 @@
 #ifndef COMPRESSION_H
 #define COMPRESSION_H
 
-#include "../../base-uart/base_uart.h"
+#include "base-uart.h"
 
 typedef struct {
     CommunicationChannel* baseChannel;
@@ -14,4 +14,4 @@ size_t rle_decompress(const uint8_t* input, size_t inputLength, uint8_t* output,
 int compression_send(void* instance, const uint8_t* data, size_t length);
 int compression_receive(void* instance, uint8_t* buffer, size_t bufferLength, size_t* receivedLength);
 
-#endif
+#endif // COMPRESSION_H
