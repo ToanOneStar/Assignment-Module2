@@ -1,7 +1,7 @@
 #ifndef SMOKE_SENSOR_H
 #define SMOKE_SENSOR_H
 
-#include "../publisher.h"
+#include "publisher.h"
 
 typedef struct {
     Publisher base;

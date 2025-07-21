@@ -1,7 +1,7 @@
 #ifndef LIGHT_SYSTEM_CONTROLLER_H
 #define LIGHT_SYSTEM_CONTROLLER_H
 
-#include "../subscriber.h"
+#include "subscriber.h"
 
 typedef struct {
     Subscriber base;

@@ -1,7 +1,7 @@
 #ifndef MOBILE_APP_NOTIFIER_H
 #define MOBILE_APP_NOTIFIER_H
 
-#include "../subscriber.h"
+#include "subscriber.h"
 
 typedef struct {
     Subscriber base;

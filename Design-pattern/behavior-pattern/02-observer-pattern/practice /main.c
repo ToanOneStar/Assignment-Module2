@@ -1,13 +1,12 @@
-#include "inc/sensors/door_sensor.h"
-#include "inc/sensors/motion_sensor.h"
-#include "inc/sensors/smoke_sensor.h"
-#include "inc/sensors/temperature_sensor.h"
-#include "inc/subscribers/alarm_system_controller.h"
-#include "inc/subscribers/hvac_system_controller.h"
-#include "inc/subscribers/light_system_controller.h"
-#include "inc/subscribers/mobile_app_notifier.h"
-
 #include <stdio.h>
+#include "alarm-system-controller.h"
+#include "door-sensor.h"
+#include "hvac-system-controller.h"
+#include "light-system-controller.h"
+#include "mobile-app-notifier.h"
+#include "motion-sensor.h"
+#include "smoke-sensor.h"
+#include "temperature-sensor.h"
 
 int main() {
     DoorSensor doorSensor;
@@ -28,8 +27,8 @@ int main() {
     AlarmSystemController alarmSystem;
     alarmSystemControllerInit(&alarmSystem);
 
-    HAVCSystemController havcSystem;
-    hvacSystemControllerInit(&havcSystem);
+    HvacSystemController hvacSystem;
+    hvacSystemControllerInit(&hvacSystem);
 
     LightSystemController lightSystem;
     lightSystemControllerInit(&lightSystem);
@@ -39,13 +38,13 @@ int main() {
 
     smokeSensor.base.subscribe(&smokeSensor.base, (Subscriber*)&mobileApp);
     smokeSensor.base.subscribe(&smokeSensor.base, (Subscriber*)&alarmSystem);
-    smokeSensor.base.subscribe(&smokeSensor.base, (Subscriber*)&havcSystem);
+    smokeSensor.base.subscribe(&smokeSensor.base, (Subscriber*)&hvacSystem);
 
     motionSensor.base.subscribe(&motionSensor.base, (Subscriber*)&mobileApp);
     motionSensor.base.subscribe(&motionSensor.base, (Subscriber*)&lightSystem);
 
     tempSensor.base.subscribe(&tempSensor.base, (Subscriber*)&mobileApp);
-    tempSensor.base.subscribe(&tempSensor.base, (Subscriber*)&havcSystem);
+    tempSensor.base.subscribe(&tempSensor.base, (Subscriber*)&hvacSystem);
 
     printf("== Simulate Door Open Event ==\n");
     doorSensorTrigger(&doorSensor, 1);
