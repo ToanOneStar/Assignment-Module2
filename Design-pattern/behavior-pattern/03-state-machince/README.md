@@ -9,17 +9,17 @@ Thiết kế phần mềm trình phát nhạc đơn giản sử dụng State Pat
 ├── main.c                
 ├── Makefile              
 ├── inc/                 
-│   ├── musicPlayer.h        
-│   ├── playerState.h         
-│   ├── stoppedState.h        
-│   ├── playingState.h      
-│   ├── pausedState.h        
+│   ├── music-player.h        
+│   ├── player-state.h         
+│   ├── stopped-state.h        
+│   ├── playing-state.h      
+│   ├── paused-state.h        
 │   └── ...                  
 ├── src/                
-│   ├── musicPlayer.c       
-│   ├── stoppedState.c        
-│   ├── playingState.c        
-│   ├── pausedState.c         
+│   ├── music-player.c       
+│   ├── stopped-state.c        
+│   ├── playing-state.c        
+│   ├── paused-state.c         
 │   └── ...                  
 ```
 
@@ -40,11 +40,44 @@ Thiết kế phần mềm trình phát nhạc đơn giản sử dụng State Pat
 make
 
 # Chạy chương trình
-./main
+./music-player
 ```
 
 ## 5. Kết quả mẫu
-![alt text](image.png)
+
+```bash
+[TEST] Current state: Stopped
+Music is already stopped.
+
+[TEST] Press Play -> Transition to Buffering
+Starting music...
+
+[TEST] Buffering complete -> Playing
+Buffering success -> Playing
+
+[TEST] Press Pause -> Transition to Paused
+Pausing music...
+
+[TEST] Resume from Paused -> Back to Playing
+Resuming music...
+
+[TEST] Press Stop -> Back to Stopped
+Stopping music...
+
+[TEST] Press Play -> Buffering -> Error occurs
+Starting music...
+Buffering fail -> next to error state
+Error...
+
+[TEST] In Error state: Try pressing Play
+Can not play: currently Error
+
+[TEST] In Error state: Try pressing Pause
+Can not pause: currently Error
+
+[TEST] In Error state: Press Stop to return to Stopped
+Stopping from error state...
+```
 
 ## 6. Mở rộng
 - Dễ dàng thêm trạng thái mới như BufferingState, ErrorState chỉ bằng cách thêm file .h/.c tương ứng và cập nhật Makefile.

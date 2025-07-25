@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../inc/bufferingState.h"
-#include "../inc/errorState.h"
-#include "../inc/musicPlayer.h"
-#include "../inc/pausedState.h"
-#include "../inc/playingState.h"
-#include "../inc/stoppedState.h"
+#include "error-state.h"
+#include "music-player.h"
+#include "stopped-state.h"
 
 static void pressPlay(PlayerState* state);
 static void pressPause(PlayerState* state);
@@ -22,7 +19,7 @@ static void pressPause(PlayerState* state) {
 
 static void pressStop(PlayerState* state) {
     printf("Stopping from error state...\n");
-    state->player->changeState(state->player, stoppedStateCreate());
+    state->player->changeState(state->player, createStoppedState());
 }
 
 static void setContext(PlayerState* state, MusicPlayer* player) {
@@ -30,8 +27,9 @@ static void setContext(PlayerState* state, MusicPlayer* player) {
     printf("Error...\n");
 }
 
-PlayerState* errorStateCreate(void) {
+PlayerState* createErrorState(void) {
     PlayerState* state = (PlayerState*)malloc(sizeof(PlayerState));
+
     state->pressPlay = pressPlay;
     state->pressPause = pressPause;
     state->pressStop = pressStop;
