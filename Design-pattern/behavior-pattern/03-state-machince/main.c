@@ -1,59 +1,49 @@
 #include <stdio.h>
-#include "inc/bufferingState.h"
-#include "inc/errorState.h"
-#include "inc/musicPlayer.h"
-#include "inc/pausedState.h"
-#include "inc/playingState.h"
-#include "inc/stoppedState.h"
+#include "buffering-state.h"
+#include "error-state.h"
+#include "music-player.h"
+#include "paused-state.h"
+#include "playing-state.h"
+#include "stopped-state.h"
 
 extern void bufferingComplete(PlayerState* state);
 extern void bufferingError(PlayerState* state);
 
 int main() {
-    // Initialize the music player in the Stopped state
-    MusicPlayer* player = musicPlayerCreate(stoppedStateCreate());
+    MusicPlayer* player = createMusicPlayer(createStoppedState());
 
-    // --- Stopped State ---
     printf("\n[TEST] Current state: Stopped\n");
-    player->clickStopButton(player); // Try stopping again (already stopped)
+    player->clickStopButton(player);
 
-    // --- Transition to Buffering ---
     printf("\n[TEST] Press Play -> Transition to Buffering\n");
-    player->clickPlayButton(player); // Go to Buffering
+    player->clickPlayButton(player);
 
-    // --- Buffering successful -> Playing ---
     printf("\n[TEST] Buffering complete -> Playing\n");
-    bufferingComplete(player->currentState); // Simulate successful buffering
+    bufferingComplete(player->currentState);
 
-    // --- Playing -> Pause ---
     printf("\n[TEST] Press Pause -> Transition to Paused\n");
     player->clickPauseButton(player);
 
-    // --- Paused -> Resume (Play) ---
     printf("\n[TEST] Resume from Paused -> Back to Playing\n");
     player->clickPlayButton(player);
 
-    // --- Playing -> Stop ---
     printf("\n[TEST] Press Stop -> Back to Stopped\n");
     player->clickStopButton(player);
 
-    // --- Stopped -> Buffering -> Error ---
     printf("\n[TEST] Press Play -> Buffering -> Error occurs\n");
-    player->clickPlayButton(player); // Buffering
+    player->clickPlayButton(player);
 
-    bufferingError(player->currentState); // Simulate buffering failure
+    bufferingError(player->currentState);
 
-    // --- In Error state -> try all buttons ---
     printf("\n[TEST] In Error state: Try pressing Play\n");
-    player->clickPlayButton(player); // Should not respond
+    player->clickPlayButton(player);
 
     printf("\n[TEST] In Error state: Try pressing Pause\n");
-    player->clickPauseButton(player); // Should not respond
+    player->clickPauseButton(player);
 
     printf("\n[TEST] In Error state: Press Stop to return to Stopped\n");
-    player->clickStopButton(player); // Back to Stopped
+    player->clickStopButton(player);
 
-    // --- End ---
-    musicPlayerDestroy(player);
+    destroyMusicPlayer(player);
     return 0;
 }
