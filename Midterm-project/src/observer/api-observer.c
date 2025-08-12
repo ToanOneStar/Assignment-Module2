@@ -48,7 +48,7 @@ APIObserver* create_api_observer(int port) {
     api->port = port;
     api->latest_data = NULL;
     pthread_create(&api->server_thread, NULL, api_server_thread, api);
-    
+
     return api;
 }
 

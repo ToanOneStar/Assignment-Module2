@@ -17,18 +17,18 @@ int main(int argc, char* argv[]) {
     printf("║                    EMBEDDED MONITORING SYSTEM v1.0                          ║\n");
     printf("║                    Design Patterns: Factory + Observer                      ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
-    
+
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
-    
+
     global_system = create_monitoring_system();
     start_monitoring_system(global_system);
-    
+
     stop_monitoring_system(global_system);
     cleanup_monitoring_system(global_system);
-    
+
     printf("\nEmbedded Monitoring System shutdown complete.\n");
     printf("Thank you for using our monitoring solution!\n");
-    
+
     return 0;
 }
