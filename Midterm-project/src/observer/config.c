@@ -2,7 +2,7 @@
 
 SystemConfig* load_config(const char* filename) {
     SystemConfig* config = malloc(sizeof(SystemConfig));
-    
+
     config->cpu_threshold = DEFAULT_CPU_THRESHOLD;
     config->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
     config->storage_threshold = DEFAULT_STORAGE_THRESHOLD;
@@ -11,7 +11,7 @@ SystemConfig* load_config(const char* filename) {
     config->refresh_interval = DEFAULT_REFRESH_INTERVAL;
     strcpy(config->log_file, "monitoring.log");
     config->api_port = PORT;
-    
+
     FILE* fp = fopen(filename, "r");
     if (fp != NULL) {
         char buffer[MAX_STRING_LEN];
@@ -39,7 +39,7 @@ SystemConfig* load_config(const char* filename) {
     } else {
         printf("Configuration file not found, using defaults\n");
     }
-    
+
     return config;
 }
 
