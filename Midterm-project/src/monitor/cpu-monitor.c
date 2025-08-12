@@ -79,8 +79,8 @@ CPUMonitor* create_cpu_monitor() {
     cpu_monitor->base.collect_data = cpu_collect_data;
     cpu_monitor->base.start = monitor_start;
     cpu_monitor->base.stop = monitor_stop;
-    cpu_monitor->cpu_threshold = 80.0;
-    cpu_monitor->temp_threshold = 70.0;
+    cpu_monitor->cpu_threshold = DEFAULT_CPU_THRESHOLD;
+    cpu_monitor->temp_threshold = DEFAULT_TEMP_THRESHOLD;
 
     return cpu_monitor;
 }

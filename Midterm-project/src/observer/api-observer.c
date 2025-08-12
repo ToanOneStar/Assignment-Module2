@@ -1,7 +1,7 @@
 #include "api-observer.h"
 
 void api_update(Observer* self, Subject* subject, void* data) {
-    APIObserver* api = (APIObserver*)self;
+    ApiObserver* api = (ApiObserver*)self;
     AlertData* alert = (AlertData*)data;
 
     if (alert) {
@@ -21,7 +21,7 @@ void api_update(Observer* self, Subject* subject, void* data) {
 }
 
 void* api_server_thread(void* arg) {
-    APIObserver* api = (APIObserver*)arg;
+    ApiObserver* api = (ApiObserver*)arg;
 
     printf("API Server listening on port %d\n", api->port);
     printf("Endpoints available:\n");
@@ -40,8 +40,8 @@ void* api_server_thread(void* arg) {
     return NULL;
 }
 
-APIObserver* create_api_observer(int port) {
-    APIObserver* api = malloc(sizeof(APIObserver));
+ApiObserver* create_api_observer(int port) {
+    ApiObserver* api = malloc(sizeof(ApiObserver));
 
     strcpy(api->base.name, "APIServer");
     api->base.update = api_update;
@@ -52,7 +52,7 @@ APIObserver* create_api_observer(int port) {
     return api;
 }
 
-void cleanup_api_observer(APIObserver* api) {
+void cleanup_api_observer(ApiObserver* api) {
     if (api->latest_data) {
         free(api->latest_data);
     }
