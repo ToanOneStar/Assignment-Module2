@@ -12,7 +12,7 @@ typedef struct {
     Monitor* monitors[5];
     ConsoleObserver* console;
     LoggerObserver* logger;
-    APIObserver* api;
+    ApiObserver* api;
     SystemConfig* config;
     int running;
 } MonitoringSystem;

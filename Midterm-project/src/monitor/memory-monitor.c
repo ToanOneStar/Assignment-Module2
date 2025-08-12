@@ -67,7 +67,7 @@ MemoryMonitor* create_memory_monitor() {
     mem_monitor->base.collect_data = memory_collect_data;
     mem_monitor->base.start = monitor_start;
     mem_monitor->base.stop = monitor_stop;
-    mem_monitor->memory_threshold = 85.0;
+    mem_monitor->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
 
     return mem_monitor;
 }

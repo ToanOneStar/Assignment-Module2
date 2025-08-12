@@ -80,7 +80,7 @@ NetworkMonitor* create_network_monitor() {
     net_monitor->base.collect_data = network_collect_data;
     net_monitor->base.start = monitor_start;
     net_monitor->base.stop = monitor_stop;
-    net_monitor->bandwidth_threshold = 1000.0;
+    net_monitor->bandwidth_threshold = DEFAULT_BANDWIDTH_THRESHOLD;
 
     return net_monitor;
 }

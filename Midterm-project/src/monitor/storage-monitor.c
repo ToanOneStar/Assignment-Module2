@@ -38,7 +38,7 @@ StorageMonitor* create_storage_monitor() {
     storage_monitor->base.collect_data = storage_collect_data;
     storage_monitor->base.start = monitor_start;
     storage_monitor->base.stop = monitor_stop;
-    storage_monitor->storage_threshold = 90.0;
+    storage_monitor->storage_threshold = DEFAULT_STORAGE_THRESHOLD;
 
     return storage_monitor;
 }

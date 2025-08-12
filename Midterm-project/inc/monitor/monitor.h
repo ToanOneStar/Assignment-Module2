@@ -2,6 +2,7 @@
 #define MONITOR_H
 
 #include "common.h"
+#include "config.h"
 #include "observer.h"
 
 typedef struct {
