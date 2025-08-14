@@ -12,7 +12,7 @@ void signal_handler(int sig) {
     }
 }
 
-int main(int argc, char* argv[]) {
+int main() {
     printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║                    EMBEDDED MONITORING SYSTEM v1.0                          ║\n");
     printf("║                    Design Patterns: Factory + Observer                      ║\n");
