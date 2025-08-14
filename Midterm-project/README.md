@@ -1,7 +1,6 @@
 # 🖥️ Embedded Monitoring System
 
 [![Version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/your-repo/embedded-monitoring)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-repo/embedded-monitoring)
 [![Language](https://img.shields.io/badge/language-C-orange.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 
