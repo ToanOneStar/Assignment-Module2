@@ -17,6 +17,16 @@ typedef struct {
     const char* write_format;
 } ConfigMap;
 
+/**
+ * @brief Initialize SystemConfig with default values.
+ * 
+ * Sets default thresholds for CPU, memory, storage, bandwidth, and temperature,
+ * as well as default refresh interval, log file name, and API port.
+ * 
+ * @param cfg (out) Pointer to SystemConfig structure to initialize.
+ * 
+ * @return void
+ */
 static void set_default_config(SystemConfig* cfg) {
     cfg->cpu_threshold = DEFAULT_CPU_THRESHOLD;
     cfg->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
@@ -28,6 +38,18 @@ static void set_default_config(SystemConfig* cfg) {
     cfg->api_port = PORT;
 }
 
+/**
+ * @brief Create a mapping between configuration fields and their string representations.
+ * 
+ * Populates an array of ConfigMap structures linking each field in SystemConfig
+ * to its type, destination pointer, and format strings for reading/writing.
+ * Optionally returns the number of entries via the count parameter.
+ * 
+ * @param config (in/out) Pointer to SystemConfig containing the actual configuration values.
+ * @param count (out, optional) Pointer to size_t to store the number of mapping entries.
+ * 
+ * @return Pointer to a static array of ConfigMap structures.
+ */
 static ConfigMap* get_config_map(SystemConfig* config, size_t* count) {
     static ConfigMap map[] = {
         {"cpu_threshold", TYPE_FLOAT, NULL, "cpu_threshold=%f", "cpu_threshold=%.1f\n"},
@@ -37,7 +59,8 @@ static ConfigMap* get_config_map(SystemConfig* config, size_t* count) {
         {"temperature_threshold", TYPE_FLOAT, NULL, "temperature_threshold=%f", "temperature_threshold=%.1f\n"},
         {"refresh_interval", TYPE_INT, NULL, "refresh_interval=%d", "refresh_interval=%d\n"},
         {"log_file", TYPE_STRING, NULL, "log_file=%s", "log_file=%s\n"},
-        {"api_port", TYPE_INT, NULL, "api_port=%d", "api_port=%d\n"}};
+        {"api_port", TYPE_INT, NULL, "api_port=%d", "api_port=%d\n"}
+    };
 
     map[0].dest = &config->cpu_threshold;
     map[1].dest = &config->memory_threshold;
@@ -54,6 +77,16 @@ static ConfigMap* get_config_map(SystemConfig* config, size_t* count) {
     return map;
 }
 
+/**
+ * @brief Load system configuration from a file, or use defaults if file not found.
+ * 
+ * Allocates a SystemConfig structure, sets default values, then attempts to
+ * read configuration values from the specified file using the ConfigMap mapping.
+ * 
+ * @param filename (in) Path to the configuration file to read.
+ * 
+ * @return Pointer to the initialized SystemConfig structure, or NULL if allocation fails.
+ */
 SystemConfig* load_config(const char* filename) {
     SystemConfig* config = malloc(sizeof(SystemConfig));
     if (!config) {
@@ -85,6 +118,17 @@ SystemConfig* load_config(const char* filename) {
     return config;
 }
 
+/**
+ * @brief Save the current system configuration to a file.
+ * 
+ * Writes all configuration fields from SystemConfig to the specified file
+ * using the mappings defined in ConfigMap and the appropriate format strings.
+ * 
+ * @param config (in) Pointer to the SystemConfig to save.
+ * @param filename (in) Path to the file where configuration should be written.
+ * 
+ * @return void
+ */
 void save_config(SystemConfig* config, const char* filename) {
     size_t count;
     ConfigMap* config_map = get_config_map(config, &count);
