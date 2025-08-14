@@ -1,37 +1,79 @@
 #include "config.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef enum {
+    TYPE_FLOAT,
+    TYPE_INT,
+    TYPE_STRING,
+} ConfigType;
+
+typedef struct {
+    const char* key;
+    ConfigType type;
+    void* dest;
+    const char* read_format;
+    const char* write_format;
+} ConfigMap;
+
+static void set_default_config(SystemConfig* cfg) {
+    cfg->cpu_threshold = DEFAULT_CPU_THRESHOLD;
+    cfg->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
+    cfg->storage_threshold = DEFAULT_STORAGE_THRESHOLD;
+    cfg->bandwidth_threshold = DEFAULT_BANDWIDTH_THRESHOLD;
+    cfg->temperature_threshold = DEFAULT_TEMP_THRESHOLD;
+    cfg->refresh_interval = DEFAULT_REFRESH_INTERVAL;
+    strcpy(cfg->log_file, "monitoring.log");
+    cfg->api_port = PORT;
+}
+
+static ConfigMap* get_config_map(SystemConfig* config, size_t* count) {
+    static ConfigMap map[] = {
+        {"cpu_threshold", TYPE_FLOAT, NULL, "cpu_threshold=%f", "cpu_threshold=%.1f\n"},
+        {"memory_threshold", TYPE_FLOAT, NULL, "memory_threshold=%f", "memory_threshold=%.1f\n"},
+        {"storage_threshold", TYPE_FLOAT, NULL, "storage_threshold=%f", "storage_threshold=%.1f\n"},
+        {"bandwidth_threshold", TYPE_FLOAT, NULL, "bandwidth_threshold=%f", "bandwidth_threshold=%.1f\n"},
+        {"temperature_threshold", TYPE_FLOAT, NULL, "temperature_threshold=%f", "temperature_threshold=%.1f\n"},
+        {"refresh_interval", TYPE_INT, NULL, "refresh_interval=%d", "refresh_interval=%d\n"},
+        {"log_file", TYPE_STRING, NULL, "log_file=%s", "log_file=%s\n"},
+        {"api_port", TYPE_INT, NULL, "api_port=%d", "api_port=%d\n"}};
+
+    map[0].dest = &config->cpu_threshold;
+    map[1].dest = &config->memory_threshold;
+    map[2].dest = &config->storage_threshold;
+    map[3].dest = &config->bandwidth_threshold;
+    map[4].dest = &config->temperature_threshold;
+    map[5].dest = &config->refresh_interval;
+    map[6].dest = config->log_file;
+    map[7].dest = &config->api_port;
+
+    if (count != NULL) {
+        *count = sizeof(map) / sizeof(map[0]);
+    }
+    return map;
+}
 
 SystemConfig* load_config(const char* filename) {
     SystemConfig* config = malloc(sizeof(SystemConfig));
+    if (!config) {
+        return NULL;
+    }
+    set_default_config(config);
 
-    config->cpu_threshold = DEFAULT_CPU_THRESHOLD;
-    config->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
-    config->storage_threshold = DEFAULT_STORAGE_THRESHOLD;
-    config->bandwidth_threshold = DEFAULT_BANDWIDTH_THRESHOLD;
-    config->temperature_threshold = DEFAULT_TEMP_THRESHOLD;
-    config->refresh_interval = DEFAULT_REFRESH_INTERVAL;
-    strcpy(config->log_file, "monitoring.log");
-    config->api_port = PORT;
+    size_t count;
+    ConfigMap* config_map = get_config_map(config, &count);
 
     FILE* fp = fopen(filename, "r");
-    if (fp != NULL) {
+    if (fp) {
         char buffer[MAX_STRING_LEN];
         while (fgets(buffer, sizeof(buffer), fp)) {
-            if (strncmp(buffer, "cpu_threshold=", 14) == 0) {
-                sscanf(buffer, "cpu_threshold=%f", &config->cpu_threshold);
-            } else if (strncmp(buffer, "memory_threshold=", 17) == 0) {
-                sscanf(buffer, "memory_threshold=%f", &config->memory_threshold);
-            } else if (strncmp(buffer, "storage_threshold=", 18) == 0) {
-                sscanf(buffer, "storage_threshold=%f", &config->storage_threshold);
-            } else if (strncmp(buffer, "bandwidth_threshold=", 20) == 0) {
-                sscanf(buffer, "bandwidth_threshold=%f", &config->bandwidth_threshold);
-            } else if (strncmp(buffer, "temperature_threshold=", 22) == 0) {
-                sscanf(buffer, "temperature_threshold=%f", &config->temperature_threshold);
-            } else if (strncmp(buffer, "refresh_interval=", 17) == 0) {
-                sscanf(buffer, "refresh_interval=%d", &config->refresh_interval);
-            } else if (strncmp(buffer, "log_file=", 9) == 0) {
-                sscanf(buffer, "log_file=%s", config->log_file);
-            } else if (strncmp(buffer, "api_port=", 9) == 0) {
-                sscanf(buffer, "api_port=%d", &config->api_port);
+            for (size_t i = 0; i < count; ++i) {
+                size_t key_len = strlen(config_map[i].key);
+                if (strncmp(buffer, config_map[i].key, key_len) == 0) {
+                    sscanf(buffer, config_map[i].read_format, config_map[i].dest);
+                    break;
+                }
             }
         }
         fclose(fp);
@@ -44,18 +86,30 @@ SystemConfig* load_config(const char* filename) {
 }
 
 void save_config(SystemConfig* config, const char* filename) {
+    size_t count;
+    ConfigMap* config_map = get_config_map(config, &count);
+
     FILE* fp = fopen(filename, "w");
-    if (fp != NULL) {
-        fprintf(fp, "# Embedded Monitoring System Configuration\n");
-        fprintf(fp, "cpu_threshold=%.1f\n", config->cpu_threshold);
-        fprintf(fp, "memory_threshold=%.1f\n", config->memory_threshold);
-        fprintf(fp, "storage_threshold=%.1f\n", config->storage_threshold);
-        fprintf(fp, "bandwidth_threshold=%.1f\n", config->bandwidth_threshold);
-        fprintf(fp, "temperature_threshold=%.1f\n", config->temperature_threshold);
-        fprintf(fp, "refresh_interval=%d\n", config->refresh_interval);
-        fprintf(fp, "log_file=%s\n", config->log_file);
-        fprintf(fp, "api_port=%d\n", config->api_port);
-        fclose(fp);
-        printf("Configuration saved to %s\n", filename);
+    if (!fp) {
+        return;
     }
+
+    fprintf(fp, "# Embedded Monitoring System Configuration\n");
+
+    for (size_t i = 0; i < count; i++) {
+        switch (config_map[i].type) {
+            case TYPE_FLOAT:
+                fprintf(fp, config_map[i].write_format, *(float*)config_map[i].dest);
+                break;
+            case TYPE_INT:
+                fprintf(fp, config_map[i].write_format, *(int*)config_map[i].dest);
+                break;
+            case TYPE_STRING:
+                fprintf(fp, config_map[i].write_format, (char*)config_map[i].dest);
+                break;
+        }
+    }
+
+    fclose(fp);
+    printf("Configuration saved to %s\n", filename);
 }

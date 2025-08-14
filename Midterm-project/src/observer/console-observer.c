@@ -5,7 +5,7 @@
 #include "storage-monitor.h"
 #include "system-monitor.h"
 
-#define GB 1024.0 * 1024.0 * 1024.0
+#define GB (1024.0 * 1024.0 * 1024.0)
 
 void console_update(Observer* self, Subject* subject, void* data) {
     AlertData* alert = (AlertData*)data;
