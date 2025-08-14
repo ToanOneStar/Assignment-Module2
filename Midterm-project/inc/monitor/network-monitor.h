@@ -9,7 +9,7 @@ typedef struct {
     float bandwidth_threshold;
 } NetworkMonitor;
 
-void network_collect_data(Monitor* self);
+void collect_network_data(Monitor* self);
 NetworkMonitor* create_network_monitor();
 
 #endif // NETWORK_MONITOR_H

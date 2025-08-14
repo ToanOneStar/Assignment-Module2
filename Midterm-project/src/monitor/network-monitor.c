@@ -1,5 +1,16 @@
 #include "network-monitor.h"
 
+/**
+ * @brief Read network interface statistics and update NetworkMonitor data.
+ * 
+ * Copies interface name and IP address, reads /proc/net/dev to get bytes
+ * and packets sent/received, and estimates download/upload speeds.
+ * 
+ * @param net_monitor (in) Pointer to NetworkMonitor to update.
+ * @param ifa (in) Pointer to ifaddrs structure representing the network interface.
+ * 
+ * @return void
+ */
 void read_network_device_file(NetworkMonitor* net_monitor, struct ifaddrs* ifa) {
     NetworkInterface* iface = &net_monitor->data.interfaces[net_monitor->data.interface_count];
 
@@ -32,6 +43,16 @@ void read_network_device_file(NetworkMonitor* net_monitor, struct ifaddrs* ifa) 
     fclose(fp);
 }
 
+/**
+ * @brief Count active TCP connections and update NetworkMonitor data.
+ * 
+ * Reads /proc/net/tcp and increments the active_connections count for each
+ * established TCP connection found.
+ * 
+ * @param net_monitor (in) Pointer to NetworkMonitor to update.
+ * 
+ * @return void
+ */
 void read_network_tcp_file(NetworkMonitor* net_monitor) {
     FILE* fp = fopen("/proc/net/tcp", "r");
     if (fp == NULL) {
@@ -49,6 +70,17 @@ void read_network_tcp_file(NetworkMonitor* net_monitor) {
     fclose(fp);
 }
 
+/**
+ * @brief Check network bandwidth usage and send alert if threshold exceeded.
+ * 
+ * Compares total bandwidth usage against the defined threshold. If exceeded,
+ * creates an alert and notifies via the Monitor's notify system.
+ * 
+ * @param net_monitor (in) Pointer to NetworkMonitor containing current data and threshold.
+ * @param self (in) Pointer to Monitor used to call notify for sending alerts.
+ * 
+ * @return void
+ */
 void alert_network(NetworkMonitor* net_monitor, Monitor* self) {
     if (net_monitor->data.total_bandwidth_usage > net_monitor->bandwidth_threshold) {
         AlertData alert = {
@@ -64,7 +96,18 @@ void alert_network(NetworkMonitor* net_monitor, Monitor* self) {
     }
 }
 
-void network_collect_data(Monitor* self) {
+/**
+ * @brief Collect network data and update NetworkMonitor structure.
+ * 
+ * Gathers information for each network interface (IP, bytes, packets, speeds),
+ * counts active TCP connections, calculates total bandwidth usage, and triggers
+ * alerts if thresholds are exceeded.
+ * 
+ * @param self (in) Pointer to Monitor, cast to NetworkMonitor inside the function.
+ * 
+ * @return void
+ */
+void collect_network_data(Monitor* self) {
     NetworkMonitor* net_monitor = (NetworkMonitor*)self;
     struct ifaddrs *ifaddrs_ptr, *ifa;
 
@@ -94,13 +137,22 @@ void network_collect_data(Monitor* self) {
     alert_network(net_monitor, self);
 }
 
+/**
+ * @brief Create and initialize a NetworkMonitor instance.
+ * 
+ * Allocates memory for NetworkMonitor, initializes its base Monitor fields,
+ * sets default bandwidth threshold, and assigns function pointers for 
+ * data collection and control.
+ * 
+ * @return Pointer to the newly created NetworkMonitor instance.
+ */
 NetworkMonitor* create_network_monitor() {
     NetworkMonitor* net_monitor = (NetworkMonitor*)malloc(sizeof(NetworkMonitor));
 
     net_monitor->base.type = MONITOR_NETWORK;
     net_monitor->base.subject = create_subject();
     net_monitor->base.running = 0;
-    net_monitor->base.collect_data = network_collect_data;
+    net_monitor->base.collect_data = collect_network_data;
     net_monitor->base.start = monitor_start;
     net_monitor->base.stop = monitor_stop;
     net_monitor->bandwidth_threshold = DEFAULT_BANDWIDTH_THRESHOLD;

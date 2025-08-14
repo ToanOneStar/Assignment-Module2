@@ -1,6 +1,16 @@
 #include "system-monitor.h"
 
-void system_collect_data(Monitor* self) {
+/**
+ * @brief Collect system data and update SystemMonitor structure.
+ * 
+ * Retrieves system uptime, load averages, current system time, kernel version,
+ * and counts the number of running services by scanning /proc.
+ * 
+ * @param self (in) Pointer to Monitor, cast to SystemMonitor inside the function.
+ * 
+ * @return void
+ */
+void collect_system_data(Monitor* self) {
     SystemMonitor* sys_monitor = (SystemMonitor*)self;
     struct sysinfo info;
 
@@ -33,13 +43,21 @@ void system_collect_data(Monitor* self) {
     }
 }
 
+/**
+ * @brief Create and initialize a SystemMonitor instance.
+ * 
+ * Allocates memory for SystemMonitor, initializes its base Monitor fields,
+ * and assigns function pointers for data collection and control.
+ * 
+ * @return Pointer to the newly created SystemMonitor instance.
+ */
 SystemMonitor* create_system_monitor() {
     SystemMonitor* sys_monitor = (SystemMonitor*)malloc(sizeof(SystemMonitor));
 
     sys_monitor->base.type = MONITOR_SYSTEM;
     sys_monitor->base.subject = create_subject();
     sys_monitor->base.running = 0;
-    sys_monitor->base.collect_data = system_collect_data;
+    sys_monitor->base.collect_data = collect_system_data;
     sys_monitor->base.start = monitor_start;
     sys_monitor->base.stop = monitor_stop;
 

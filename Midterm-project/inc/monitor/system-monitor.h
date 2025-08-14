@@ -8,7 +8,7 @@ typedef struct {
     SystemData data;
 } SystemMonitor;
 
-void system_collect_data(Monitor* self);
+void collect_system_data(Monitor* self);
 SystemMonitor* create_system_monitor();
 
 #endif // SYSTEM_MONITOR_H

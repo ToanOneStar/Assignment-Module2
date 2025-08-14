@@ -1,12 +1,57 @@
 #include "cpu-monitor.h"
 
-void cpu_collect_data(Monitor* self) {
-    CPUMonitor* cpu_monitor = (CPUMonitor*)self;
+/**
+ * @brief Check CPU status and send alerts if thresholds are exceeded.
+ * 
+ * Checks total CPU usage and temperature against defined thresholds.
+ * If any value exceeds the limit, an alert is created and sent via Monitor.
+ * 
+ * @param cpu_monitor (in) Pointer to CpuMonitor containing current data and thresholds.
+ * @param self (in) Pointer to Monitor used to call notify for sending alerts.
+ * 
+ * @return void
+ */
+void alert_cpu(CpuMonitor* cpu_monitor, Monitor* self) {
+    if (cpu_monitor->data.total_usage > cpu_monitor->cpu_threshold) {
+        AlertData alert = {
+            .level = ALERT_WARNING,
+            .source = MONITOR_CPU,
+            .timestamp = time(NULL),
+        };
+
+        snprintf(alert.message, sizeof(alert.message), "CPU usage high: %.1f%%", cpu_monitor->data.total_usage);
+        self->subject->notify(self->subject, &alert);
+    }
+
+    if (cpu_monitor->data.temperature > cpu_monitor->temp_threshold) {
+        AlertData alert = {
+            .level = ALERT_CRITICAL,
+            .source = MONITOR_CPU,
+            .timestamp = time(NULL),
+        };
+
+        snprintf(alert.message, sizeof(alert.message), "CPU temperature critical: %.1f°C", cpu_monitor->data.temperature);
+        self->subject->notify(self->subject, &alert);
+    }
+}
+
+/**
+ * @brief Collect CPU data and update CpuMonitor structure.
+ * 
+ * Reads CPU usage and other statistics from /proc/stat, estimates total CPU usage,
+ * counts cores, generates mock temperature and frequency values, and collects 
+ * top 5 CPU-consuming processes. Calls alert function if thresholds are exceeded.
+ * 
+ * @param self (in) Pointer to Monitor, cast to CpuMonitor inside the function.
+ * 
+ * @return void
+ */
+void collect_cpu_data(Monitor* self) {
+    CpuMonitor* cpu_monitor = (CpuMonitor*)self;
+
     FILE* fp;
     char buffer[MAX_STRING_LEN];
-
     fp = fopen("/proc/stat", "r");
-
     if (fp != NULL) {
         fgets(buffer, sizeof(buffer), fp);
         unsigned long user, nice, system, idle, iowait, irq, softirq;
@@ -44,39 +89,25 @@ void cpu_collect_data(Monitor* self) {
         fclose(fp);
     }
 
-    if (cpu_monitor->data.total_usage > cpu_monitor->cpu_threshold) {
-        AlertData alert = {
-            .level = ALERT_WARNING,
-            .source = MONITOR_CPU,
-            .timestamp = time(NULL),
-        };
-
-        snprintf(alert.message, sizeof(alert.message), "CPU usage high: %.1f%%", cpu_monitor->data.total_usage);
-        self->subject->notify(self->subject, &alert);
-    }
-
-    if (cpu_monitor->data.temperature > cpu_monitor->temp_threshold) {
-        AlertData alert = {
-            .level = ALERT_CRITICAL,
-            .source = MONITOR_CPU,
-            .timestamp = time(NULL),
-        };
-
-        snprintf(alert.message,
-                 sizeof(alert.message),
-                 "CPU temperature critical: %.1f°C",
-                 cpu_monitor->data.temperature);
-        self->subject->notify(self->subject, &alert);
-    }
+    alert_cpu(cpu_monitor, self);
 }
 
-CPUMonitor* create_cpu_monitor() {
-    CPUMonitor* cpu_monitor = (CPUMonitor*)malloc(sizeof(CPUMonitor));
-    
+/**
+ * @brief Create and initialize a CpuMonitor instance.
+ * 
+ * Allocates memory for CpuMonitor, initializes its base Monitor fields,
+ * sets default CPU usage and temperature thresholds, and assigns function pointers
+ * for data collection and control.
+ * 
+ * @return Pointer to the newly created CpuMonitor instance.
+ */
+CpuMonitor* create_cpu_monitor() {
+    CpuMonitor* cpu_monitor = (CpuMonitor*)malloc(sizeof(CpuMonitor));
+
     cpu_monitor->base.type = MONITOR_CPU;
     cpu_monitor->base.subject = create_subject();
     cpu_monitor->base.running = 0;
-    cpu_monitor->base.collect_data = cpu_collect_data;
+    cpu_monitor->base.collect_data = collect_cpu_data;
     cpu_monitor->base.start = monitor_start;
     cpu_monitor->base.stop = monitor_stop;
     cpu_monitor->cpu_threshold = DEFAULT_CPU_THRESHOLD;

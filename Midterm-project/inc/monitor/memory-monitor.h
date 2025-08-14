@@ -9,7 +9,7 @@ typedef struct {
     float memory_threshold;
 } MemoryMonitor;
 
-void memory_collect_data(Monitor* self);
+void collect_memory_data(Monitor* self);
 MemoryMonitor* create_memory_monitor();
 
 #endif // MEMORY_MONITOR_H

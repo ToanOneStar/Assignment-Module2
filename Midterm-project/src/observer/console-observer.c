@@ -7,6 +7,18 @@
 
 #define GB (1024.0 * 1024.0 * 1024.0)
 
+/**
+ * @brief Display alert data on the console.
+ * 
+ * Prints alert level, source, and message to the console. If the alert level
+ * is CRITICAL, triggers a system beep.
+ * 
+ * @param self (in) Pointer to Observer (not used in this function).
+ * @param subject (in) Pointer to Subject sending the alert (not used directly).
+ * @param data (in) Pointer to AlertData containing the alert information.
+ * 
+ * @return void
+ */
 void console_update(Observer* self, Subject* subject, void* data) {
     AlertData* alert = (AlertData*)data;
 
@@ -32,6 +44,17 @@ void console_update(Observer* self, Subject* subject, void* data) {
     }
 }
 
+/**
+ * @brief Display monitoring data for all monitors on the console.
+ * 
+ * Clears the console and prints formatted information for CPU, memory, storage,
+ * network, and system monitors. Includes usage statistics, top processes, I/O,
+ * bandwidth, and system uptime. Uses ASCII boxes for readability.
+ * 
+ * @param console (in) Pointer to ConsoleObserver containing the list of monitors.
+ * 
+ * @return void
+ */
 void display_monitoring_data(ConsoleObserver* console) {
     system("clear");
     printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
@@ -47,7 +70,7 @@ void display_monitoring_data(ConsoleObserver* console) {
 
         switch (monitor->type) {
             case MONITOR_CPU: {
-                CPUMonitor* cpu = (CPUMonitor*)monitor;
+                CpuMonitor* cpu = (CpuMonitor*)monitor;
 
                 printf("┌─ CPU MONITORING ─────────────────────────────────────────────────────────────┐\n");
                 printf("│ Usage: %.1f%%    Cores: %d    Frequency: %.1f MHz    Temperature: %.1f°C    \n",
@@ -160,6 +183,17 @@ void display_monitoring_data(ConsoleObserver* console) {
     }
 }
 
+/**
+ * @brief Create and initialize a ConsoleObserver.
+ * 
+ * Allocates a ConsoleObserver, sets its name and update callback, and links
+ * it to an array of monitors to display.
+ * 
+ * @param monitors (in) Array of Monitor pointers to be observed and displayed.
+ * @param count (in) Number of monitors in the array.
+ * 
+ * @return Pointer to the initialized ConsoleObserver.
+ */
 ConsoleObserver* create_console_observer(Monitor** monitors, int count) {
     ConsoleObserver* console = (ConsoleObserver*)malloc(sizeof(ConsoleObserver));
 

@@ -8,9 +8,9 @@ typedef struct {
     CPUData data;
     float cpu_threshold;
     float temp_threshold;
-} CPUMonitor;
+} CpuMonitor;
 
-void cpu_collect_data(Monitor* self);
-CPUMonitor* create_cpu_monitor();
+void collect_cpu_data(Monitor* self);
+CpuMonitor* create_cpu_monitor();
 
 #endif // CPU_MONITOR_H

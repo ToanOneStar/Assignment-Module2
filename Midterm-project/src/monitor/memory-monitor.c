@@ -1,6 +1,42 @@
 #include "memory-monitor.h"
 
-void memory_collect_data(Monitor* self) {
+/**
+ * @brief Check memory usage and send an alert if threshold is exceeded.
+ * 
+ * Calculates the percentage of used RAM. If it exceeds the memory threshold,
+ * an alert is created and sent via the Monitor's notify system.
+ * 
+ * @param mem_monitor (in) Pointer to MemoryMonitor containing current memory data and threshold.
+ * @param self (in) Pointer to Monitor used to call notify for sending alerts.
+ * 
+ * @return void
+ */
+void alert_memory(MemoryMonitor* mem_monitor, Monitor* self) {
+    float memory_usage_percent = 100.0 * mem_monitor->data.used_ram / mem_monitor->data.total_ram;
+
+    if (memory_usage_percent > mem_monitor->memory_threshold) {
+        AlertData alert = {
+            .level = ALERT_WARNING,
+            .source = MONITOR_MEMORY,
+            .timestamp = time(NULL),
+        };
+
+        snprintf(alert.message, sizeof(alert.message), "Memory usage high: %.1f%%", memory_usage_percent);
+        self->subject->notify(self->subject, &alert);
+    }
+}
+
+/**
+ * @brief Collect memory data and update MemoryMonitor structure.
+ * 
+ * Retrieves RAM and swap usage via sysinfo, reads cached memory from /proc/meminfo,
+ * collects top 5 memory-consuming processes, and triggers memory alerts if thresholds are exceeded.
+ * 
+ * @param self (in) Pointer to Monitor, cast to MemoryMonitor inside the function.
+ * 
+ * @return void
+ */
+void collect_memory_data(Monitor* self) {
     MemoryMonitor* mem_monitor = (MemoryMonitor*)self;
     struct sysinfo info;
 
@@ -44,27 +80,25 @@ void memory_collect_data(Monitor* self) {
         fclose(fp);
     }
 
-    float memory_usage_percent = 100.0 * mem_monitor->data.used_ram / mem_monitor->data.total_ram;
-
-    if (memory_usage_percent > mem_monitor->memory_threshold) {
-        AlertData alert = {
-            .level = ALERT_WARNING,
-            .source = MONITOR_MEMORY,
-            .timestamp = time(NULL),
-        };
-
-        snprintf(alert.message, sizeof(alert.message), "Memory usage high: %.1f%%", memory_usage_percent);
-        self->subject->notify(self->subject, &alert);
-    }
+    alert_memory(mem_monitor, self);
 }
 
+/**
+ * @brief Create and initialize a MemoryMonitor instance.
+ * 
+ * Allocates memory for MemoryMonitor, initializes its base Monitor fields,
+ * sets default memory usage threshold, and assigns function pointers for 
+ * data collection and control.
+ * 
+ * @return Pointer to the newly created MemoryMonitor instance.
+ */
 MemoryMonitor* create_memory_monitor() {
     MemoryMonitor* mem_monitor = malloc(sizeof(MemoryMonitor));
 
     mem_monitor->base.type = MONITOR_MEMORY;
     mem_monitor->base.subject = create_subject();
     mem_monitor->base.running = 0;
-    mem_monitor->base.collect_data = memory_collect_data;
+    mem_monitor->base.collect_data = collect_memory_data;
     mem_monitor->base.start = monitor_start;
     mem_monitor->base.stop = monitor_stop;
     mem_monitor->memory_threshold = DEFAULT_MEMORY_THRESHOLD;
