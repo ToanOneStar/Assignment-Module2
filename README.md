@@ -8,3 +8,4 @@
 - Varriables
 - Standard IO
 - Operator and control structure
+## Midterm project
