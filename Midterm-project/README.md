@@ -242,10 +242,10 @@ make
 ```
 
 ### 🛠️ Kết quả
-![system](https://github-production-user-asset-6210df.s3.amazonaws.com/165185364/478016971-3a0324a3-f4d0-439f-b3d7-ed1bf79fffef.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250814T124808Z&X-Amz-Expires=300&X-Amz-Signature=51d18986cfb784a0e948e30bed465350039d2c81016451708e4318a7bb90a112&X-Amz-SignedHeaders=host)
+![system](../system.png)
 
 Kiểm tra các log cảnh báo ở file ```monitoring.log```:
-![logger](https://github-production-user-asset-6210df.s3.amazonaws.com/165185364/478017476-2cff4427-47db-4c32-8109-2fe28508ef6f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250814%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250814T124940Z&X-Amz-Expires=300&X-Amz-Signature=31c6a762626001a49ff2ee04613d35e767c15f5f0e716d1fb24a2301b231fa38&X-Amz-SignedHeaders=host)
+![logger](../log.png)
 ### ⚙️ Runtime Controls:
 
 Khi chạy chương trình, sử dụng các phím:
