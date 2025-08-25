@@ -331,7 +331,7 @@ df -h
 
 ## 👥 Authors
 
-- **ToanOneStar** - HUST - [YourGithub](https://github.com/ToanOneStar)
+- **ToanOneStar** - HUST - [MyGithub](https://github.com/ToanOneStar)
 
 ---
 
