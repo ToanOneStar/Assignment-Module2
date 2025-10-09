@@ -101,7 +101,8 @@ Sau khi chạy, bạn sẽ thấy prompt `> ` để nhập lệnh CLIa.
 ### 🛠️ Kết quả
 
 Kết quả chạy kiểm thử khi tạo 2 peer:
-![Video Demo](https://drive.google.com/file/d/1pcexCi6MmunbTtpnWbZQGOPEtRO-KLUR/view?usp=drive_link)
+
+https://drive.google.com/file/d/1pcexCi6MmunbTtpnWbZQGOPEtRO-KLUR/view?usp=drive_link
 
 ---
 ## 🛠️ Các lệnh CLI (ví dụ và cú pháp)
