@@ -1,7 +1,7 @@
 # 🗨️ P2P Chat Application
 
 [![Version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/ToanOneStar/Assignment-Module2)
-[![Build Status](https://img.shields.io/badge/build-unknown-lightgrey.svg)](https://github.com/ToanOneStar/Assignment-Module2)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/ToanOneStar/Assignment-Module2)
 [![Language](https://img.shields.io/badge/language-C%2B%2B-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B)
 
 ## 📖 Mô tả dự án
