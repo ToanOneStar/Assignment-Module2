@@ -6,7 +6,7 @@
 
 ## 📖 Mô tả dự án
 
-Ứng dụng chat P2P đơn giản cho phép nhiều peer kết nối trực tiếp, gửi và nhận thông điệp qua TCP. Mục tiêu là thực hành quản lý kết nối, xử lý lệnh trên CLI và xây dựng server/client đơn giản cho môi trường học tập.
+Ứng dụng chat P2P đơn giản cho phép nhiều peer kết nối trực tiếp, gửi và nhận thông điệp qua TCP. Mục tiêu là thực hành quản lý kết nối, xử lý lệnh trên CLI và xây dựng server/client đơn giản.
 
 ### 🎯 Bài toán giải quyết
 - Cho phép khởi chạy một node (server) lắng nghe trên địa chỉ IP và port chỉ định
