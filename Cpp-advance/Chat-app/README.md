@@ -96,11 +96,11 @@ g++ -std=c++17 -I./inc src/*.cpp main.cpp -o chat_app
 ./chat_app 127.0.0.1 8080
 ```
 
-Sau khi chạy, bạn sẽ thấy prompt `> ` để nhập lệnh CLI.
+Sau khi chạy, bạn sẽ thấy prompt `> ` để nhập lệnh CLIa.
 
 ### 🛠️ Kết quả
 Kết quả chạy kiểm thử khi tạo 2 peer:
-
+![logger](https://toanonestar.github.io/Assignment-Module2/compressed.mp4)
 ---
 ## 🛠️ Các lệnh CLI (ví dụ và cú pháp)
 
