@@ -19,7 +19,6 @@ int main() {
     printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
 
     signal(SIGINT, signal_handler);
-    signal(SIGTERM, signal_handler);
 
     global_system = create_monitoring_system();
     start_monitoring_system(global_system);
@@ -28,7 +27,6 @@ int main() {
     cleanup_monitoring_system(global_system);
 
     printf("\nEmbedded Monitoring System shutdown complete.\n");
-    printf("Thank you for using our monitoring solution!\n");
-
+    
     return 0;
 }

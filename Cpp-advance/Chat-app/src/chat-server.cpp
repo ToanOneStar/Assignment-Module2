@@ -5,6 +5,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <algorithm>
+#include <cctype>
 
 ChatServer::ChatServer(const std::string& ip, int port)
     : serverSocket(-1), port(port), ipAddress(ip), running(false) {
@@ -34,11 +36,16 @@ bool ChatServer::start() {
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
     
-    if (ipAddress.empty() || ipAddress == "0.0.0.0") {
+    // Trim whitespace from provided IP (helps catch accidental spaces in argv)
+    std::string ipTrimmed = ipAddress;
+    ipTrimmed.erase(ipTrimmed.begin(), std::find_if(ipTrimmed.begin(), ipTrimmed.end(), [](unsigned char ch){ return !std::isspace(ch); }));
+    ipTrimmed.erase(std::find_if(ipTrimmed.rbegin(), ipTrimmed.rend(), [](unsigned char ch){ return !std::isspace(ch); }).base(), ipTrimmed.end());
+
+    if (ipTrimmed.empty() || ipTrimmed == "0.0.0.0") {
         serverAddr.sin_addr.s_addr = INADDR_ANY;
     } else {
-        if (inet_pton(AF_INET, ipAddress.c_str(), &serverAddr.sin_addr) <= 0) {
-            std::cerr << "Invalid IP address" << std::endl;
+        if (inet_pton(AF_INET, ipTrimmed.c_str(), &serverAddr.sin_addr) <= 0) {
+            std::cerr << "Invalid IP address: '" << ipTrimmed << "'" << std::endl;
             close(serverSocket);
             return false;
         }
@@ -59,7 +66,7 @@ bool ChatServer::start() {
     running = true;
     acceptThread = std::thread(&ChatServer::acceptConnections, this);
     
-    std::cout << "Server started on " << ipAddress << ":" << port << std::endl;
+    std::cout << "Server started on " << ipTrimmed << ":" << port << std::endl;
     return true;
 }
 
